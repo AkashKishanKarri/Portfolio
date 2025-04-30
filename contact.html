@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Akash Kishan Karri</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .contact-container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+        }
+
+        .contact-container h1 {
+            text-align: center;
+            color: #00ffff;
+            margin-bottom: 20px;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            padding: 12px;
+            border-radius: 6px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background-color: #2a2a2a;
+            color: #fff;
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .contact-form button {
+            background-color: #00ffff;
+            color: #000;
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border: none;
+        }
+
+        .contact-form button:hover {
+            background-color: #00cccc;
+        }
+
+        .social-icons {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .social-icons a {
+            color: #fff;
+            margin: 0 10px;
+            font-size: 24px;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #00ffff;
+        }
+
+        .contact-email {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 16px;
+            color: #aaa;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="container">
+            <div id="myhead">
+                <span class="highlight">📧 switchone06@gmail.com</span>
+            </div>
+
+            <nav>
+                <ul class="nav-blocks">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="resume.html">Resume</a></li>
+                    <li><a href="work.html">Work</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="services.html">Services</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="contact-container">
+        <h1>Contact Me</h1>
+        <form class="contact-form" action="mailto:switchone06@gmail.com" method="POST" enctype="text/plain">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <input type="text" name="subject" placeholder="Subject">
+            <textarea name="message" placeholder="Your Message..." required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+
+        <div class="social-icons">
+            <a href="https://instagram.com/akashkishankarri" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://linkedin.com/in/akash-kishan-karri-0b6165293" target="_blank"><i
+                    class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/AkashKishanKarri" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://leetcode.com/u/K_AKASH_K/" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/LeetCode_logo_black.png" width="24"
+                    height="24" style="filter: invert(1); vertical-align: middle;" alt="LeetCode">
+            </a>
+        </div>
+
+        <div class="contact-email">
+            Or reach out directly via email: <strong>switchone06@gmail.com</strong>
+        </div>
+    </main>
+
+    <footer style="background-color: black; color: white; padding: 20px;">
+        <div
+            style="display: flex;justify-content: space-between;align-items: center;max-width: 1100px;margin: auto;flex-wrap: wrap;">
+            <div style="display: flex;gap: 20px;justify-content: center;flex: 1;">
+                <a href="https://instagram.com/akashkishankarri" target="_blank" style="color: white;"><i
+                        class="fab fa-instagram fa-2x"></i></a>
+                <a href="https://linkedin.com/in/akash-kishan-karri-0b6165293" target="_blank" style="color: white;"><i
+                        class="fab fa-linkedin fa-2x"></i></a>
+                <a href="https://github.com/AkashKishanKarri" target="_blank" style="color: white;"><i
+                        class="fab fa-github fa-2x"></i></a>
+                <a href="https://leetcode.com/u/K_AKASH_K/" target="_blank">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/LeetCode_logo_black.png"
+                        alt="LeetCode" width="30" height="30" style="filter: invert(1); vertical-align: middle;">
+                </a>
+            </div>
+
+            <div style="margin-left: auto;padding-left: 20px;">
+                <a href="mailto:switchone06@gmail.com" target="_blank" style="color: white;">
+                    <i class="fas fa-envelope fa-2x"></i>
+                </a>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 10px;">
+            <p>Made with ❤️ by Akash Kishan Karri</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
