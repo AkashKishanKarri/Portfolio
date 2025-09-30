@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Akash Kishan Karri - Portfolio Home">
+    <title>Home | Akash Kishan Karri</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div id="myhead">
+                <span class="highlight">📧 switchone06@gmail.com</span>
+            </div>
+            <nav>
+                <ul class="nav-blocks">
+                    <li><a class="active" href="index.html">Home</a></li>
+                    <li><a href="resume.html">Resume</a></li>
+                    <li><a href="work.html">Work</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="services.html">Services</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="showcase" class="container showcase-flex">
+        <div class="showcase-text">
+            <h1>Hello, I'm <span class="highlight">Akash Kishan Karri</span></h1>
+            <h2><span id="typing-text" class="typing-text">Engineering Student | Web Developer | AI Enthusiast</span></h2>
+            <p style="margin-top:20px;">
+                I create modern web experiences, explore AI solutions, and mentor peers in computer science. Let's build
+                something amazing together!
+            </p>
+            <div class="center-button">
+                <a href="resume.html" class="button-style">📄 View My Resume</a>
+                <a href="services.html" class="button-style" style="margin-left:10px;">🚀 Services</a>
+            </div>
+        </div>
+
+        <div class="showcase-image">
+            <img src="profilepic.jpeg" alt="Akash Kishan Karri" class="profile-pic">
+        </div>
+    </section>
+
+    <section id="boxes" class="container">
+        <div class="box">
+            <i class="fas fa-code fa-3x" style="color:#4FD1C5;"></i>
+            <h3>Web Development</h3>
+            <p>Building responsive and interactive websites with modern technologies and frameworks.</p>
+        </div>
+        <div class="box">
+            <i class="fas fa-robot fa-3x" style="color:#4FD1C5;"></i>
+            <h3>AI & ML Projects</h3>
+            <p>Implementing predictive models and exploring AI integration in real-world applications.</p>
+        </div>
+        <div class="box">
+            <i class="fas fa-graduation-cap fa-3x" style="color:#4FD1C5;"></i>
+            <h3>Academic Mentoring</h3>
+            <p>Helping peers with CS concepts, project guidance, and learning resources through Chitti.</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-links">
+            <a href="https://instagram.com/akashkishankarri" target="_blank"><i class="fab fa-instagram fa-2x"></i></a>
+            <a href="https://linkedin.com/in/akash-kishan-karri-0b6165293" target="_blank"><i class="fab fa-linkedin fa-2x"></i></a>
+            <a href="https://github.com/AkashKishanKarri" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+            <a href="https://leetcode.com/u/K_AKASH_K/" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/1/19/LeetCode_logo_black.png" width="30" style="filter: invert(1);"></a>
+        </div>
+        <p style="text-align:center; margin-top:10px;">Made with ❤️ by Akash Kishan Karri</p>
+    </footer>
+
+    <script>
+        // Typing animation effect
+        const text = document.getElementById('typing-text');
+        const phrases = ["Engineering Student | Web Developer | AI Enthusiast", "Full-Stack Developer", "Machine Learning & AI Projects"];
+        let i = 0, j = 0, currentPhrase = [], isDeleting = false;
+
+        function type() {
+            if (i >= phrases.length) i = 0;
+            let fullText = phrases[i];
+            if (isDeleting) {
+                currentPhrase = fullText.substring(0, j--);
+            } else {
+                currentPhrase = fullText.substring(0, j++);
+            }
+            text.textContent = currentPhrase;
+
+            if (!isDeleting && j === fullText.length + 1) {
+                isDeleting = true;
+                setTimeout(type, 1500);
+            } else if (isDeleting && j === 0) {
+                isDeleting = false;
+                i++;
+            }
+            setTimeout(type, isDeleting ? 50 : 150);
+        }
+
+        type();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,293 @@
+/* ===================== Global ===================== */
+body {
+    font: 15px/1.5 'Lucida Sans', 'Lucida Grande', Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #000000;
+    color: #CBD5E0;
+}
+
+a {
+    text-decoration: none;
+    color: #e3dd2a;
+    transition: 0.3s;
+}
+
+a:hover {
+    color: #e3dd2a;
+}
+
+.container {
+    width: 85%;
+    margin: auto;
+    overflow: hidden;
+    padding: 0 10px;
+}
+
+/* ===================== Header ===================== */
+header {
+    background-color: #000;
+    color: #E2E8F0;
+    padding: 20px 0;
+    border-bottom: 3px solid #2D3748;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header #myhead {
+    float: left;
+    font-weight: bold;
+}
+
+header nav {
+    float: right;
+}
+
+header ul.nav-blocks {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+}
+
+header ul.nav-blocks li a {
+    display: block;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    font-weight: bold;
+    background-color: #1A202C;
+    color: #E2E8F0;
+    transition: 0.3s;
+}
+
+header ul.nav-blocks li a:hover,
+header ul.nav-blocks li a.active {
+    background-color: #e3dd2a;
+    color: black;
+}
+
+/* ===================== Showcase ===================== */
+#showcase {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 60px;
+}
+
+.showcase-text {
+    flex: 1;
+    min-width: 300px;
+}
+
+.showcase-text h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    color: #E2E8F0;
+}
+
+.showcase-text h2 {
+    color: #e3dd2a;
+    margin-bottom: 15px;
+}
+
+.showcase-text h3 {
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+.showcase-image img.profile-pic {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #e3dd2a;
+}
+
+/* ===================== Buttons ===================== */
+.center-button {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+}
+
+.button-style {
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 16px;
+    color: #000;
+    background-color: #e3dd2a;
+    transition: 0.3s;
+}
+
+.button-style:hover {
+    background-color: #e3dd2a;
+    color: #fff;
+}
+
+/* ===================== Skills / Boxes ===================== */
+#boxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+#boxes .box {
+    background-color: #1A202C;
+    padding: 20px;
+    border-radius: 12px;
+    flex: 1;
+    min-width: 250px;
+    text-align: center;
+}
+
+#boxes .box img {
+    width: 80px;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+/* ===================== Skills Column ===================== */
+.skills-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.skill-column {
+    min-width: 300px;
+}
+
+.skill-column h2 {
+    color: #e3dd2a;
+    margin-bottom: 10px;
+}
+
+.skill-column ul {
+    padding-left: 20px;
+    line-height: 1.8;
+}
+
+.skill-column a {
+    color: #CBD5E0;
+}
+
+/* ===================== Work & Resume Cards ===================== */
+.work-card, .resume-card {
+    background-color: #1A202C;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.work-card h2, .resume-card h2 {
+    color: #e3dd2a;
+    margin-bottom: 5px;
+}
+
+.work-card h3, .resume-card h3 {
+    color: #E2E8F0;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.work-card ul, .resume-card ul {
+    padding-left: 20px;
+    line-height: 1.6;
+}
+
+/* ===================== Footer ===================== */
+footer {
+    background-color: #000;
+    color: #CBD5E0;
+    padding: 20px;
+    text-align: center;
+    margin-top: 40px;
+}
+
+footer a {
+    color: #e3dd2a;
+    margin: 0 10px;
+}
+
+footer a:hover {
+    color: #319795;
+}
+
+/* ===================== Contact Form ===================== */
+.contact-container {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 20px;
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.contact-form input,
+.contact-form textarea {
+    padding: 12px;
+    border-radius: 6px;
+    border: none;
+    background-color: #2a2a2a;
+    color: #fff;
+    font-size: 16px;
+}
+
+.contact-form textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.contact-form button {
+    padding: 12px;
+    font-weight: bold;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    background-color: #4FD1C5;
+    transition: 0.3s;
+}
+
+.contact-form button:hover {
+    background-color: #e3dd2a;
+    color: #fff;
+}
+
+/* ===================== Responsive ===================== */
+@media (max-width: 768px) {
+    #showcase {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .showcase-image {
+        margin: 20px 0;
+    }
+
+    header ul.nav-blocks {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .skills-wrapper {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    #boxes {
+        flex-direction: column;
+    }
+}
