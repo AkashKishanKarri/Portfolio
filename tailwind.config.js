@@ -4,22 +4,27 @@ export default {
   theme: {
     extend: {
       colors: {
-        bg: "#F5F5F3",
-        surface: "#FFFFFF",
-        ink: "#14161A",
-        muted: "#6B6F76",
-        line: "#E2E4E8",
-        accent: "#2E5EFF",
-        accentDim: "rgba(46,94,255,0.08)",
-        accentDim2: "rgba(46,94,255,0.16)",
+        night: "#0D0D0D",
+        panel: "#161616",
+        chalk: "#EDEAE3",
+        mute: "#8B877F",
+        edge: "#2A2A2A",
+        saffron: "#FFB547",
+        // postcard
+        card: "#FBF8F1",
+        ink: "#161616",
+        red: "#E5432D",
+        blue: "#2E5BE6",
+        green: "#18A05E",
       },
       fontFamily: {
-        disp: ['"Space Grotesk"', "sans-serif"],
-        body: ['"IBM Plex Sans"', "sans-serif"],
-        mono: ['"IBM Plex Mono"', "monospace"],
+        sans: ['"Archivo"', "system-ui", "sans-serif"],
+        serif: ['"Instrument Serif"', "Georgia", "serif"],
+        mono: ['"JetBrains Mono"', "ui-monospace", "monospace"],
+        hand: ['"Caveat"', "cursive"],
       },
-      maxWidth: {
-        wrap: "1160px",
+      transitionTimingFunction: {
+        expo: "cubic-bezier(0.16, 1, 0.3, 1)",
       },
     },
   },

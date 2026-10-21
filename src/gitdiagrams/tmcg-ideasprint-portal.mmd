@@ -1,0 +1,114 @@
+flowchart TD
+
+subgraph group_public["Public event site"]
+  node_homepage["Event homepage<br/>[page.tsx]"]
+  node_hero["Hero<br/>[Hero.tsx]"]
+  node_journey_dates["Journey dates"]
+  node_journey_rounds["Journey rounds"]
+  node_instructions["Instructions"]
+  node_prizes["Prizes<br/>[PrizeSection.tsx]"]
+  node_director["Director message"]
+  node_judges["Judges<br/>[JudgesSection.tsx]"]
+  node_gallery["Gallery<br/>[GallerySection.tsx]"]
+  node_faq["FAQ<br/>[FAQSection.tsx]"]
+  node_contact["Contact<br/>[ContactSection.tsx]"]
+end
+
+subgraph group_identity["Identity and access"]
+  node_login["Google sign-in<br/>[page.tsx]"]
+  node_auth_callback["OAuth callback<br/>[route.ts]"]
+  node_roles["Role routing<br/>[roles.ts]"]
+end
+
+subgraph group_operations["Event operations"]
+  node_registration["Team registration<br/>[actions.ts]"]
+  node_registration_rules["Registration schema<br/>[schema.ts]"]
+  node_super_dashboard["Super dashboard<br/>[page.tsx]"]
+  node_admin_data["Admin dashboard data<br/>[admin-data.ts]"]
+  node_admin_actions["Admin actions<br/>[admin-actions.ts]"]
+  node_team_actions["Team actions<br/>[team-actions.ts]"]
+  node_admin_routes["Admin modules"]
+  node_team_dashboard["Team dashboard"]
+end
+
+subgraph group_shared["Shared data layer"]
+  node_dashboard_types["Dashboard data types<br/>[database.ts]"]
+  node_config_types["Configuration types<br/>[config.ts]"]
+  node_supabase_browser["Browser client<br/>[client.ts]"]
+  node_supabase_server["Server client<br/>[server.ts]"]
+  node_supabase_service["Service client<br/>[service.ts]"]
+end
+
+node_visitor(("Visitor"))
+node_participant(("Participant"))
+node_supabase[("Supabase")]
+
+node_visitor -.->|"browses"| node_homepage
+node_homepage -->|"renders"| node_hero
+node_homepage -->|"renders"| node_journey_dates
+node_homepage -->|"renders"| node_journey_rounds
+node_homepage -->|"renders"| node_instructions
+node_homepage -->|"renders"| node_prizes
+node_homepage -->|"renders"| node_director
+node_homepage -->|"renders"| node_judges
+node_homepage -->|"renders"| node_gallery
+node_homepage -->|"renders"| node_faq
+node_homepage -->|"renders"| node_contact
+node_participant -.->|"registers"| node_registration
+node_registration -.->|"validates with"| node_registration_rules
+node_participant -.->|"signs in"| node_login
+node_login -->|"starts OAuth"| node_supabase_browser
+node_login -->|"redirects to"| node_auth_callback
+node_auth_callback -->|"exchanges code"| node_supabase_server
+node_auth_callback -->|"links profile"| node_supabase_service
+node_auth_callback -->|"routes by role"| node_roles
+node_auth_callback -->|"casts profile"| node_dashboard_types
+node_super_dashboard -->|"fetches data"| node_admin_data
+node_super_dashboard -.->|"uses types"| node_dashboard_types
+node_admin_routes -.->|"invokes actions"| node_admin_actions
+node_team_dashboard -.->|"invokes actions"| node_team_actions
+node_admin_actions -.->|"reads and writes"| node_supabase
+node_admin_data -.->|"reads data"| node_supabase
+node_team_actions -.->|"reads and writes"| node_supabase
+node_homepage -->|"reads public data"| node_supabase
+
+click node_homepage "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/app/(public)/page.tsx"
+click node_hero "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/components/sections/Hero.tsx"
+click node_journey_dates "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/components/sections/JourneyDatesSection.tsx"
+click node_journey_rounds "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/components/sections/JourneyRoundsSection.tsx"
+click node_instructions "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/components/sections/InstructionsSection.tsx"
+click node_prizes "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/components/sections/PrizeSection.tsx"
+click node_director "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/components/sections/DirectorMessageSection.tsx"
+click node_judges "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/components/sections/JudgesSection.tsx"
+click node_gallery "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/components/sections/GallerySection.tsx"
+click node_faq "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/components/sections/FAQSection.tsx"
+click node_contact "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/components/sections/ContactSection.tsx"
+click node_registration "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/lib/registration/actions.ts"
+click node_registration_rules "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/lib/registration/schema.ts"
+click node_login "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/app/login/page.tsx"
+click node_auth_callback "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/app/auth/callback/route.ts"
+click node_roles "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/lib/auth/roles.ts"
+click node_super_dashboard "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/app/dashboard/super/page.tsx"
+click node_admin_data "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/lib/dashboard/admin-data.ts"
+click node_admin_actions "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/lib/dashboard/admin-actions.ts"
+click node_team_actions "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/lib/dashboard/team-actions.ts"
+click node_admin_routes "https://github.com/mdcgitam/tmcg-ideasprint-portal/tree/master/src/components/dashboard/admin/routes"
+click node_team_dashboard "https://github.com/mdcgitam/tmcg-ideasprint-portal/tree/master/src/components/dashboard/team"
+click node_dashboard_types "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/types/database.ts"
+click node_config_types "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/types/config.ts"
+click node_supabase_browser "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/lib/supabase/client.ts"
+click node_supabase_server "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/lib/supabase/server.ts"
+click node_supabase_service "https://github.com/mdcgitam/tmcg-ideasprint-portal/blob/master/src/lib/supabase/service.ts"
+
+classDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a
+classDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554
+classDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+classDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+classDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+classDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81
+classDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
+class node_homepage,node_hero,node_journey_dates,node_journey_rounds,node_instructions,node_prizes,node_director,node_judges,node_gallery,node_faq,node_contact toneBlue
+class node_login,node_auth_callback,node_roles,node_supabase toneAmber
+class node_registration,node_registration_rules,node_super_dashboard,node_admin_data,node_admin_actions,node_team_actions,node_admin_routes,node_team_dashboard toneMint
+class node_dashboard_types,node_config_types,node_supabase_browser,node_supabase_server,node_supabase_service toneRose
+class node_visitor,node_participant toneIndigo

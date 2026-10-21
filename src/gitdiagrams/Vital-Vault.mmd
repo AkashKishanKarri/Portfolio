@@ -1,0 +1,56 @@
+flowchart TD
+
+subgraph group_account["Account"]
+  node_register["Registration<br/>[register.js]"]
+  node_login["Login<br/>[login.js]"]
+  node_logout["Logout<br/>[logout.js]"]
+  node_guard["Session guard<br/>[auth.js]"]
+end
+
+subgraph group_market["Marketplace"]
+  node_home["Role picker<br/>[index.js]"]
+  node_lender["Lender portal<br/>[lender.js]"]
+  node_renter["Renter portal<br/>[renter.js]"]
+end
+
+subgraph group_storage["Browser storage"]
+  node_user[("userDetails")]
+  node_items[("items")]
+  node_notify[("rentalNotification")]
+end
+
+node_student(("GITAM student"))
+
+node_student -->|"signs up"| node_register
+node_student -->|"signs in"| node_login
+node_register -->|"saves profile"| node_user
+node_login -->|"opens"| node_home
+node_home -->|"checks"| node_guard
+node_guard -->|"reads"| node_user
+node_home -->|"lend"| node_lender
+node_home -->|"rent"| node_renter
+node_lender -->|"lists items"| node_items
+node_renter -->|"books items"| node_items
+node_renter -->|"notifies lender"| node_notify
+node_notify -.->|"shown to"| node_lender
+node_logout -->|"clears"| node_user
+
+click node_register "https://github.com/AkashKishanKarri/Vital-Vault/blob/HEAD/register.js"
+click node_login "https://github.com/AkashKishanKarri/Vital-Vault/blob/HEAD/login.js"
+click node_logout "https://github.com/AkashKishanKarri/Vital-Vault/blob/HEAD/logout.js"
+click node_guard "https://github.com/AkashKishanKarri/Vital-Vault/blob/HEAD/auth.js"
+click node_home "https://github.com/AkashKishanKarri/Vital-Vault/blob/HEAD/index.js"
+click node_lender "https://github.com/AkashKishanKarri/Vital-Vault/blob/HEAD/lender.js"
+click node_renter "https://github.com/AkashKishanKarri/Vital-Vault/blob/HEAD/renter.js"
+
+classDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a
+classDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554
+classDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+classDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+classDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+classDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81
+classDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
+class node_register,node_login,node_logout,node_guard toneMint
+class node_home,node_lender,node_renter toneBlue
+class node_user,node_items,node_notify toneRose
+class node_student toneIndigo

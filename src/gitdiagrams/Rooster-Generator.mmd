@@ -1,0 +1,53 @@
+flowchart TD
+
+subgraph group_input["Schedule setup"]
+  node_dates["Date range<br/>[shift-scheduler.html]"]
+  node_team["Team members<br/>[shift-scheduler.html]"]
+  node_labels["Shift labels<br/>[shift-scheduler.html]"]
+end
+
+subgraph group_engine["Roster engine"]
+  node_generate["Rotation generator<br/>[generate()]"]
+  node_validate["Coverage check<br/>[validate()]"]
+  node_cycle["Manual edits<br/>[cycle()]"]
+end
+
+subgraph group_output["Output"]
+  node_render["Roster grid<br/>[render()]"]
+  node_csv[("CSV export")]
+end
+
+node_planner(("Planner"))
+
+node_planner -->|"fills in"| node_dates
+node_planner -->|"fills in"| node_team
+node_planner -->|"fills in"| node_labels
+node_dates -->|"feeds"| node_generate
+node_team -->|"feeds"| node_generate
+node_labels -->|"feeds"| node_generate
+node_generate -->|"builds"| node_render
+node_generate -->|"checks"| node_validate
+node_render -->|"click a cell"| node_cycle
+node_cycle -->|"re-renders"| node_render
+node_cycle -->|"re-checks"| node_validate
+node_render -->|"downloads"| node_csv
+
+click node_dates "https://github.com/AkashKishanKarri/Rooster-Generator/blob/HEAD/shift-scheduler.html"
+click node_team "https://github.com/AkashKishanKarri/Rooster-Generator/blob/HEAD/shift-scheduler.html"
+click node_labels "https://github.com/AkashKishanKarri/Rooster-Generator/blob/HEAD/shift-scheduler.html"
+click node_generate "https://github.com/AkashKishanKarri/Rooster-Generator/blob/HEAD/shift-scheduler.html"
+click node_validate "https://github.com/AkashKishanKarri/Rooster-Generator/blob/HEAD/shift-scheduler.html"
+click node_cycle "https://github.com/AkashKishanKarri/Rooster-Generator/blob/HEAD/shift-scheduler.html"
+click node_render "https://github.com/AkashKishanKarri/Rooster-Generator/blob/HEAD/shift-scheduler.html"
+
+classDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a
+classDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554
+classDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+classDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+classDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+classDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81
+classDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
+class node_dates,node_team,node_labels toneBlue
+class node_generate,node_validate,node_cycle toneAmber
+class node_render,node_csv toneMint
+class node_planner toneIndigo

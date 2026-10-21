@@ -1,0 +1,92 @@
+flowchart TD
+
+subgraph group_web["Web experience"]
+  node_router["SPA routes<br/>[App.jsx]"]
+  node_home["Lab home<br/>[Home.jsx]"]
+  node_navigation["Navigation<br/>[Navbar.jsx]"]
+  node_footer["Site footer<br/>[Footer.jsx]"]
+  node_three["3D canvas<br/>[ThreeCanvas.jsx]"]
+  node_faceassets["Face model assets"]
+end
+
+subgraph group_learning["Learning"]
+  node_tutorials["Tutorial library<br/>[Tutorials.jsx]"]
+  node_quizzes["Quiz catalog<br/>[Quizzes.jsx]"]
+  node_attempt["Quiz attempt<br/>[QuizAttempt.jsx]"]
+  node_pdf["PDF preview"]
+end
+
+subgraph group_operations["Requests and admin"]
+  node_contact["Contact form<br/>[ContactUs.jsx]"]
+  node_request["Requests<br/>[RequestForm.jsx]"]
+  node_adminlogin["Admin login<br/>[AdminLogin.jsx]"]
+  node_dashboard["Admin dashboard<br/>[AdminDashboard.jsx]"]
+end
+
+subgraph group_platform["Data and media"]
+  node_firebase["Firebase client<br/>[firebaseConfig.js]"]
+  node_firestore[("Firestore")]
+  node_cloudinary["Cloudinary uploads"]
+  node_functions["Server functions<br/>[index.js]"]
+  node_backend["Additional backend<br/>[index.js]"]
+end
+
+node_visitor(("Visitor"))
+
+node_visitor -->|"opens"| node_router
+node_router -->|"routes to"| node_home
+node_router -->|"routes to"| node_request
+node_router -->|"routes to"| node_adminlogin
+node_router -->|"routes to"| node_dashboard
+node_router -->|"routes to"| node_contact
+node_router -->|"routes to"| node_tutorials
+node_router -->|"routes to"| node_quizzes
+node_router -->|"routes to"| node_attempt
+node_home -->|"renders"| node_three
+node_home -->|"reads via"| node_firebase
+node_contact -->|"writes via"| node_firebase
+node_tutorials -->|"reads via"| node_firebase
+node_quizzes -->|"reads via"| node_firebase
+node_attempt -->|"loads and submits via"| node_firebase
+node_firebase -->|"accesses"| node_firestore
+node_home -->|"renders"| node_navigation
+node_home -->|"renders"| node_footer
+node_contact -->|"renders"| node_footer
+node_tutorials -->|"renders"| node_navigation
+node_tutorials -->|"renders"| node_footer
+node_quizzes -->|"renders"| node_navigation
+node_quizzes -->|"renders"| node_footer
+node_router -.->|"serves models"| node_faceassets
+node_cloudinary -.->|"provides PDF media"| node_pdf
+
+click node_router "https://github.com/akashkishankarri/cxrrrr/blob/main/src/App.jsx"
+click node_home "https://github.com/akashkishankarri/cxrrrr/blob/main/src/pages/Home.jsx"
+click node_navigation "https://github.com/akashkishankarri/cxrrrr/blob/main/src/components/Navbar.jsx"
+click node_footer "https://github.com/akashkishankarri/cxrrrr/blob/main/src/components/Footer.jsx"
+click node_contact "https://github.com/akashkishankarri/cxrrrr/blob/main/src/pages/ContactUs.jsx"
+click node_request "https://github.com/akashkishankarri/cxrrrr/blob/main/src/pages/RequestForm.jsx"
+click node_adminlogin "https://github.com/akashkishankarri/cxrrrr/blob/main/src/pages/AdminLogin.jsx"
+click node_dashboard "https://github.com/akashkishankarri/cxrrrr/blob/main/src/pages/AdminDashboard.jsx"
+click node_tutorials "https://github.com/akashkishankarri/cxrrrr/blob/main/src/pages/Tutorials.jsx"
+click node_quizzes "https://github.com/akashkishankarri/cxrrrr/blob/main/src/pages/Quizzes.jsx"
+click node_attempt "https://github.com/akashkishankarri/cxrrrr/blob/main/src/pages/QuizAttempt.jsx"
+click node_three "https://github.com/akashkishankarri/cxrrrr/blob/main/src/components/ThreeCanvas.jsx"
+click node_faceassets "https://github.com/akashkishankarri/cxrrrr/tree/main/public/models"
+click node_pdf "https://github.com/akashkishankarri/cxrrrr/blob/main/src/components/PdfPreviewModal.jsx"
+click node_firebase "https://github.com/akashkishankarri/cxrrrr/blob/main/src/firebase/firebaseConfig.js"
+click node_cloudinary "https://github.com/akashkishankarri/cxrrrr/blob/main/src/utils/cloudinaryUpload.js"
+click node_functions "https://github.com/akashkishankarri/cxrrrr/blob/main/functions/index.js"
+click node_backend "https://github.com/akashkishankarri/cxrrrr/blob/main/functions-backend/index.js"
+
+classDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a
+classDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554
+classDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+classDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+classDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+classDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81
+classDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
+class node_router,node_home,node_navigation,node_footer,node_three,node_faceassets toneBlue
+class node_tutorials,node_quizzes,node_attempt,node_pdf toneAmber
+class node_contact,node_request,node_adminlogin,node_dashboard toneMint
+class node_firebase,node_firestore,node_cloudinary,node_functions,node_backend toneRose
+class node_visitor toneIndigo

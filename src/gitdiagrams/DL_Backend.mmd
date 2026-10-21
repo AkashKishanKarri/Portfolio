@@ -1,0 +1,57 @@
+flowchart TD
+
+subgraph group_api["API routes"]
+  node_enrollment["Member enrollment<br/>[main.py]"]
+  node_recognition_route["Attendance recognition<br/>[main.py]"]
+  node_members["Member directory<br/>[main.py]"]
+  node_attendance["Attendance records<br/>[main.py]"]
+end
+
+subgraph group_recognition["Face recognition"]
+  node_face_pipeline["Face embeddings and matching"]
+end
+
+subgraph group_persistence["Persistence"]
+  node_firebase["Firebase setup<br/>[firebase_config.py]"]
+  node_firestore[("Firestore")]
+end
+
+subgraph group_enrollment_ui["Enrollment UI"]
+  node_enroll_page["Enrollment page<br/>[enroll_camera.html]"]
+end
+
+node_client(("API client"))
+
+node_client -->|"uploads images"| node_enrollment
+node_enrollment -->|"computes embedding"| node_face_pipeline
+node_enrollment -->|"stores embedding"| node_firestore
+node_client -->|"uploads image"| node_recognition_route
+node_recognition_route -->|"reads members"| node_firestore
+node_recognition_route -->|"matches faces"| node_face_pipeline
+node_recognition_route -->|"returns attendance"| node_client
+node_client -->|"requests members"| node_members
+node_members -->|"reads members"| node_firestore
+node_client -->|"manages records"| node_attendance
+node_attendance -->|"reads and writes"| node_firestore
+node_firebase -->|"initializes client"| node_firestore
+node_client -->|"requests page"| node_enroll_page
+
+click node_enrollment "https://github.com/akashkishankarri/dl_backend/blob/main/main.py"
+click node_recognition_route "https://github.com/akashkishankarri/dl_backend/blob/main/main.py"
+click node_members "https://github.com/akashkishankarri/dl_backend/blob/main/main.py"
+click node_attendance "https://github.com/akashkishankarri/dl_backend/blob/main/main.py"
+click node_face_pipeline "https://github.com/akashkishankarri/dl_backend/blob/main/face_recognition.py"
+click node_firebase "https://github.com/akashkishankarri/dl_backend/blob/main/firebase_config.py"
+click node_enroll_page "https://github.com/akashkishankarri/dl_backend/blob/main/templates/enroll_camera.html"
+
+classDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a
+classDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554
+classDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+classDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+classDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+classDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81
+classDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
+class node_enrollment,node_recognition_route,node_members,node_attendance,node_client toneBlue
+class node_face_pipeline toneAmber
+class node_firebase,node_firestore toneMint
+class node_enroll_page toneRose

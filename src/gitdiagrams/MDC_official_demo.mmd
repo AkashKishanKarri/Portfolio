@@ -1,0 +1,84 @@
+flowchart TD
+
+subgraph group_pages["Public pages"]
+  node_router["SPA routes<br/>[App.jsx]"]
+  node_home["Home<br/>[Home.jsx]"]
+  node_about["About<br/>[About.jsx]"]
+  node_events["Events<br/>[Events.jsx]"]
+  node_contact["Contact<br/>[ContactUs.jsx]"]
+end
+
+subgraph group_sections["Home sections"]
+  node_hero["Hero<br/>[Hero.jsx]"]
+  node_domains["Domains<br/>[Domains.jsx]"]
+  node_tenure["Academic tenure<br/>[AcademicTenure.jsx]"]
+  node_eventsec["Events section<br/>[EventsSection.jsx]"]
+  node_eventcard["Event card<br/>[EventCard.jsx]"]
+end
+
+subgraph group_admin["Admin"]
+  node_login["Admin login<br/>[AdminLogin.jsx]"]
+  node_auth["Auth context<br/>[AuthContext.jsx]"]
+  node_dashboard["Admin dashboard<br/>[AdminDashboard.jsx]"]
+end
+
+subgraph group_data["Data"]
+  node_tenuredata["Tenure rosters<br/>[tenureData.js]"]
+  node_firebase["Firebase client<br/>[firebase.js]"]
+  node_firestore[("Firestore")]
+end
+
+node_visitor(("Visitor"))
+node_gmail["Gmail compose"]
+
+node_visitor -->|"opens"| node_router
+node_router -->|"routes to"| node_home
+node_router -->|"routes to"| node_about
+node_router -->|"routes to"| node_events
+node_router -->|"routes to"| node_contact
+node_router -->|"routes to"| node_login
+node_home -->|"renders"| node_hero
+node_home -->|"renders"| node_domains
+node_home -->|"renders"| node_tenure
+node_home -->|"renders"| node_eventsec
+node_tenure -->|"reads"| node_tenuredata
+node_about -->|"reads"| node_tenuredata
+node_events -->|"renders"| node_eventcard
+node_eventsec -->|"reads via"| node_firebase
+node_events -->|"reads via"| node_firebase
+node_login -->|"signs in via"| node_auth
+node_auth -->|"guards"| node_dashboard
+node_auth -->|"uses"| node_firebase
+node_dashboard -->|"writes events via"| node_firebase
+node_firebase -->|"accesses"| node_firestore
+node_contact -.->|"opens draft"| node_gmail
+
+click node_router "https://github.com/AkashKishanKarri/MDC_official_demo/blob/HEAD/src/App.jsx"
+click node_home "https://github.com/AkashKishanKarri/MDC_official_demo/blob/HEAD/src/pages/Home.jsx"
+click node_about "https://github.com/AkashKishanKarri/MDC_official_demo/blob/HEAD/src/pages/About.jsx"
+click node_events "https://github.com/AkashKishanKarri/MDC_official_demo/blob/HEAD/src/pages/Events.jsx"
+click node_contact "https://github.com/AkashKishanKarri/MDC_official_demo/blob/HEAD/src/pages/ContactUs.jsx"
+click node_hero "https://github.com/AkashKishanKarri/MDC_official_demo/blob/HEAD/src/components/home/Hero.jsx"
+click node_domains "https://github.com/AkashKishanKarri/MDC_official_demo/blob/HEAD/src/components/home/Domains.jsx"
+click node_tenure "https://github.com/AkashKishanKarri/MDC_official_demo/blob/HEAD/src/components/home/AcademicTenure.jsx"
+click node_eventsec "https://github.com/AkashKishanKarri/MDC_official_demo/blob/HEAD/src/components/home/EventsSection.jsx"
+click node_eventcard "https://github.com/AkashKishanKarri/MDC_official_demo/blob/HEAD/src/components/events/EventCard.jsx"
+click node_login "https://github.com/AkashKishanKarri/MDC_official_demo/blob/HEAD/src/pages/AdminLogin.jsx"
+click node_auth "https://github.com/AkashKishanKarri/MDC_official_demo/blob/HEAD/src/context/AuthContext.jsx"
+click node_dashboard "https://github.com/AkashKishanKarri/MDC_official_demo/blob/HEAD/src/pages/AdminDashboard.jsx"
+click node_tenuredata "https://github.com/AkashKishanKarri/MDC_official_demo/blob/HEAD/src/data/tenureData.js"
+click node_firebase "https://github.com/AkashKishanKarri/MDC_official_demo/blob/HEAD/src/firebase/firebase.js"
+
+classDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a
+classDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554
+classDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+classDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+classDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+classDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81
+classDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
+class node_router,node_home,node_about,node_events,node_contact toneBlue
+class node_hero,node_domains,node_tenure,node_eventsec,node_eventcard toneAmber
+class node_login,node_auth,node_dashboard toneMint
+class node_tenuredata,node_firebase,node_firestore toneRose
+class node_visitor toneIndigo
+class node_gmail toneNeutral

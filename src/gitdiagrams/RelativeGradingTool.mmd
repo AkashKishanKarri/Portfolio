@@ -1,0 +1,60 @@
+flowchart TD
+
+subgraph group_model["Domain model"]
+  node_person["Person<br/>[AdvancedGradingApp.java]"]
+  node_student["Student<br/>[AdvancedGradingApp.java]"]
+  node_grading["Grading interface<br/>[AdvancedGradingApp.java]"]
+end
+
+subgraph group_engine["Grading engine"]
+  node_system["GradingSystem<br/>[AdvancedGradingApp.java]"]
+  node_load["CSV loader<br/>[loadFromCSV()]"]
+  node_stats["Class statistics<br/>[calculateStatistics()]"]
+  node_assign["Relative grades<br/>[assignGrades()]"]
+end
+
+subgraph group_ui["Swing UI"]
+  node_main["App entry<br/>[AdvancedGradingApp]"]
+  node_viz["Grade chart<br/>[GradeVisualizer]"]
+end
+
+node_input[("Marks CSV<br/>[SampleSheet.csv]")]
+node_output[("grades_output.csv")]
+node_teacher(("Teacher"))
+
+node_teacher -->|"chooses file"| node_main
+node_main -->|"runs"| node_system
+node_system -->|"implements"| node_grading
+node_student -->|"extends"| node_person
+node_system -->|"calls"| node_load
+node_load -->|"reads"| node_input
+node_load -->|"creates"| node_student
+node_system -->|"calls"| node_stats
+node_system -->|"calls"| node_assign
+node_assign -->|"writes"| node_output
+node_main -->|"opens"| node_viz
+node_viz -->|"click a bar"| node_student
+
+click node_person "https://github.com/AkashKishanKarri/RelativeGradingTool/blob/HEAD/AdvancedGradingApp.java"
+click node_student "https://github.com/AkashKishanKarri/RelativeGradingTool/blob/HEAD/AdvancedGradingApp.java"
+click node_grading "https://github.com/AkashKishanKarri/RelativeGradingTool/blob/HEAD/AdvancedGradingApp.java"
+click node_system "https://github.com/AkashKishanKarri/RelativeGradingTool/blob/HEAD/AdvancedGradingApp.java"
+click node_load "https://github.com/AkashKishanKarri/RelativeGradingTool/blob/HEAD/AdvancedGradingApp.java"
+click node_stats "https://github.com/AkashKishanKarri/RelativeGradingTool/blob/HEAD/AdvancedGradingApp.java"
+click node_assign "https://github.com/AkashKishanKarri/RelativeGradingTool/blob/HEAD/AdvancedGradingApp.java"
+click node_main "https://github.com/AkashKishanKarri/RelativeGradingTool/blob/HEAD/AdvancedGradingApp.java"
+click node_viz "https://github.com/AkashKishanKarri/RelativeGradingTool/blob/HEAD/AdvancedGradingApp.java"
+click node_input "https://github.com/AkashKishanKarri/RelativeGradingTool/blob/HEAD/SampleSheet.csv"
+
+classDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a
+classDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554
+classDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+classDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+classDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+classDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81
+classDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
+class node_person,node_student,node_grading toneMint
+class node_system,node_load,node_stats,node_assign toneAmber
+class node_main,node_viz toneBlue
+class node_input,node_output toneRose
+class node_teacher toneIndigo
