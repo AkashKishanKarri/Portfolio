@@ -75,7 +75,7 @@ export default function Project() {
             Project <span className="text-saffron">{String(i + 1).padStart(2, "0")}</span> / {String(projects.length).padStart(2, "0")}
           </span>
         </div>
-        <h1 ref={titleRef} key={slug} className="mt-10 font-bold semi text-[clamp(2.8rem,8vw,8rem)] leading-[0.9] tracking-[-0.03em] max-w-[16ch]">
+        <h1 ref={titleRef} key={slug} className="mt-10 font-bold semi text-[clamp(2.8rem,8vw,8rem)] leading-[0.9] tracking-[-0.015em] max-w-[16ch]">
           {p.title.split(" ").map((w, j) => (
             <span key={j} className="mask mr-[0.22em]">
               <span className="t inline-block">{w}</span>
@@ -133,7 +133,7 @@ export default function Project() {
         <div className="grid md:grid-cols-[1fr_3fr] gap-8 border-t border-edge pt-8">
           <div className="label text-mute pt-2">(Architecture)</div>
           <div className="flex flex-wrap items-end justify-between gap-6">
-            <h2 className="font-bold semi text-[clamp(2rem,4.4vw,4rem)] leading-[0.92] tracking-[-0.02em]">
+            <h2 className="font-bold semi text-[clamp(2rem,4.4vw,4rem)] leading-[0.92] tracking-[-0.01em]">
               How it&apos;s <span className="font-serif italic font-normal text-saffron">wired</span>
             </h2>
             <span className="label text-mute">Interactive map · GitDiagram</span>
@@ -168,7 +168,7 @@ export default function Project() {
       <TLink to={`/work/${next.slug}`} className="group block border-t border-edge px-5 md:px-10 py-16 md:py-24">
         <span className="label text-mute">Next project</span>
         <span className="mt-5 flex items-end justify-between gap-6">
-          <span className="font-bold semi text-[clamp(2.4rem,6.5vw,6rem)] leading-[0.92] tracking-[-0.03em] max-w-[18ch] transition-colors group-hover:text-saffron">
+          <span className="font-bold semi text-[clamp(2.4rem,6.5vw,6rem)] leading-[0.92] tracking-[-0.015em] max-w-[18ch] transition-colors group-hover:text-saffron">
             {next.title}
           </span>
           <span className="w-16 h-16 md:w-24 md:h-24 shrink-0 rounded-full bg-saffron text-night text-3xl md:text-4xl flex items-center justify-center transition-transform duration-700 ease-expo group-hover:-rotate-45">

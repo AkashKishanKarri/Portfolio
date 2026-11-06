@@ -26,7 +26,7 @@ export default function Work() {
           </TLink>
         </div>
         <div className="mt-10 grid md:grid-cols-[1.6fr_1fr] gap-8 items-end">
-          <h1 ref={titleRef} className="font-bold semi text-[clamp(3.2rem,10vw,9.5rem)] leading-[0.86] tracking-[-0.035em]">
+          <h1 ref={titleRef} className="font-bold semi text-[clamp(3.2rem,10vw,9.5rem)] leading-[0.86] tracking-[-0.01em]">
             <span className="mask"><span className="t inline-block">Things</span></span>{" "}
             <span className="mask"><span className="t inline-block">I&apos;ve</span></span>{" "}
             <span className="mask">

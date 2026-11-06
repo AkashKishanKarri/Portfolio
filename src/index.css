@@ -22,13 +22,13 @@ textarea:focus-visible,
 
 @layer utilities {
   .cond {
-    font-stretch: 70%;
+    font-stretch: 75%;
   }
   .semi {
-    font-stretch: 85%;
+    font-stretch: 96%;
   }
   .wide {
-    font-stretch: 125%;
+    font-stretch: 100%;
   }
 }
 
@@ -58,7 +58,7 @@ textarea:focus-visible,
   height: var(--h);
   margin-right: calc(var(--h) * 0.06);
   perspective: calc(var(--h) * 5);
-  font-family: "Archivo", sans-serif;
+  font-family: "Bricolage Grotesque", sans-serif;
   font-weight: 700;
   font-stretch: 85%;
   font-size: calc(var(--h) * 0.72);

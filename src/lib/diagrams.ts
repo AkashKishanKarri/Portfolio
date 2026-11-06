@@ -254,4 +254,40 @@ const ideasprint: Diagram = {
   ],
 };
 
-export const diagrams = { ideasprint, attendance, cxr, mdc, prodvis, shiftflow, vitalVault, grading };
+const gmun: Diagram = {
+  repo: "mdcgitam/GMUN",
+  nodes: [
+    { id: "public", label: "Public site", sub: "hero · about · FAQ", x: 40, y: 60, kind: "client", path: "app/page.tsx" },
+    { id: "committees", label: "Committees", sub: "7 committees · agendas", x: 220, y: 60, kind: "client", path: "app/committees/[id]/page.tsx" },
+    { id: "wizard", label: "Register wizard", sub: "details → payment → review", x: 400, y: 60, kind: "client", path: "components/registration/RegistrationWizard.tsx" },
+    { id: "confirm", label: "Confirmation", sub: "printable receipt", x: 580, y: 60, kind: "client", path: "app/confirmation/[registrationId]/page.tsx" },
+    { id: "admin", label: "Admin dashboard", sub: "verify · edit · export", x: 760, y: 60, kind: "client", path: "app/admin/(protected)/page.tsx" },
+    { id: "proxy", label: "proxy.ts", sub: "guards /admin", x: 40, y: 220, kind: "code", path: "proxy.ts" },
+    { id: "config", label: "config/", sub: "committees · pricing · FAQ", x: 220, y: 220, kind: "code", path: "config/committees.ts" },
+    { id: "regact", label: "Registration actions", sub: "zod · dedupe · UTR", x: 400, y: 220, kind: "server", path: "lib/registration/actions.ts" },
+    { id: "payments", label: "Payment providers", sub: "UPI QR · Razorpay · Cashfree", x: 580, y: 220, w: 170, kind: "code", path: "lib/payments/service.ts" },
+    { id: "adminact", label: "Admin actions", sub: "status · notes · proofs", x: 760, y: 220, kind: "server", path: "lib/admin/actions.ts" },
+    { id: "auth", label: "Supabase Auth", sub: "Google · admin_profiles", x: 40, y: 380, kind: "data", path: "app/auth/callback/route.ts" },
+    { id: "db", label: "Postgres", sub: "15 migrations · RLS", x: 400, y: 380, kind: "data", path: "supabase/migrations/0001_init.sql" },
+    { id: "storage", label: "Storage", sub: "photos · payment proofs", x: 580, y: 380, kind: "data", path: "supabase/migrations/0009_profile_photos.sql" },
+    { id: "excel", label: "Excel export", sub: "SheetJS · CSV", x: 760, y: 380, kind: "code", path: "lib/excel/export.ts" },
+  ],
+  groups: [
+    { label: "Next.js 16 App Router · Vercel", ids: ["public", "committees", "wizard", "confirm", "admin"] },
+    { label: "Server", ids: ["proxy", "config", "regact", "payments", "adminact"] },
+    { label: "Supabase · exports", ids: ["auth", "db", "storage", "excel"] },
+  ],
+  edges: [
+    { from: "proxy", to: "auth", label: "session" },
+    { from: "committees", to: "config" },
+    { from: "wizard", to: "regact", label: "submit" },
+    { from: "regact", to: "payments", label: "amount" },
+    { from: "regact", to: "storage", label: "signed uploads" },
+    { from: "regact", to: "db", label: "registration" },
+    { from: "admin", to: "adminact" },
+    { from: "adminact", to: "db", label: "verify payment" },
+    { from: "adminact", to: "excel", label: "xlsx" },
+  ],
+};
+
+export const diagrams = { gmun, ideasprint, attendance, cxr, mdc, prodvis, shiftflow, vitalVault, grading };

@@ -3,26 +3,15 @@ import { animate, stagger } from "animejs";
 import { internships, leadership, education, achievements, certifications, skillGroups } from "@/lib/data";
 import Reveal from "@/components/Reveal";
 import { TLink } from "@/components/Transition";
-
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-const now = new Date();
-const NOW = now.getFullYear() + now.getMonth() / 12;
-const parse = (s: string) => {
-  const m = s.match(/([A-Z][a-z]{2})\s+(\d{4})/);
-  return m ? +m[2] + MONTHS.indexOf(m[1]) / 12 : NOW;
-};
-const span = (when: string) => {
-  const [a, b] = when.split(/\s*-\s*/);
-  return { start: parse(a), end: b ? parse(b) : NOW };
-};
+import { NOW, duration, span } from "@/lib/dates";
 
 type Kind = "work" | "community" | "education";
-type Item = { id: string; kind: Kind; org: string; role: string; when: string; location?: string; desc?: string; details: string[]; logo?: string; start: number; end: number };
+type Item = { id: string; kind: Kind; org: string; role: string; when: string; location?: string; score?: string; desc?: string; details: string[]; logo?: string; start: number; end: number };
 
 const items: Item[] = [
   ...internships.map((e) => ({ id: e.title + e.org, kind: "work" as Kind, org: e.org.split(",")[0], role: e.title, when: e.when, location: e.location, desc: e.desc, details: e.details, logo: e.logo, ...span(e.when) })),
   ...leadership.map((e) => ({ id: e.title + e.org, kind: "community" as Kind, org: e.org.split(",")[0], role: e.title, when: e.when, location: e.location, desc: e.desc, details: e.details, logo: e.logo, ...span(e.when) })),
-  ...education.map((e) => ({ id: e.school, kind: "education" as Kind, org: e.school.split(",")[0], role: `${e.degree} · ${e.score}`, when: e.when, details: [], ...span(e.when) })),
+  ...education.map((e) => ({ id: e.school, kind: "education" as Kind, org: e.school.split(",")[0], role: e.degree, score: e.score, when: e.when, location: e.school.split(", ")[1], details: [], ...span(e.when) })),
 ];
 
 const KIND: Record<Kind, { label: string; bar: string; dot: string }> = {
@@ -120,7 +109,7 @@ function Timeline({ hover, setHover }: { hover: string | null; setHover: (id: st
 function Entry({ it, hover, setHover }: { it: Item; hover: string | null; setHover: (id: string | null) => void }) {
   const [open, setOpen] = useState(false);
   const body = useRef<HTMLDivElement>(null);
-  const has = it.details.length > 0 || !!it.desc;
+  const ongoing = it.end > NOW;
 
   useEffect(() => {
     const el = body.current;
@@ -129,7 +118,7 @@ function Entry({ it, hover, setHover }: { it: Item; hover: string | null; setHov
       el.style.height = "auto";
       const h = el.offsetHeight;
       animate(el, { height: [0, h], duration: 700, ease: "outExpo" }).then(() => (el.style.height = "auto"));
-      animate(el.querySelectorAll("li, p"), { opacity: [0, 1], translateY: [14, 0], duration: 700, delay: stagger(60, { start: 120 }), ease: "outExpo" });
+      animate(el.querySelectorAll("li"), { opacity: [0, 1], translateY: [14, 0], duration: 700, delay: stagger(60, { start: 120 }), ease: "outExpo" });
     } else {
       animate(el, { height: [el.offsetHeight, 0], duration: 500, ease: "outExpo" });
     }
@@ -141,51 +130,79 @@ function Entry({ it, hover, setHover }: { it: Item; hover: string | null; setHov
       data-r
       onMouseEnter={() => setHover(it.id)}
       onMouseLeave={() => setHover(null)}
-      className={`border-t border-edge py-6 transition-colors duration-300 ${hover === it.id ? "bg-panel/60" : ""}`}
+      className="relative grid md:grid-cols-[12rem_1fr_1.3fr] gap-x-10 gap-y-4 py-8 md:py-10 border-t border-edge"
     >
-      <button onClick={() => has && setOpen((o) => !o)} className="w-full text-left flex items-start gap-4" aria-expanded={open} disabled={!has}>
+      <span
+        className={`absolute left-0 -top-px h-px w-full origin-left bg-saffron transition-transform duration-700 ease-expo ${hover === it.id ? "scale-x-100" : "scale-x-0"}`}
+      />
+      <div className="label text-mute leading-relaxed">
+        <span className="block text-chalk/80">{it.when.replace(" - ", " – ")}</span>
+        <span className={`block ${ongoing ? "text-saffron" : ""}`}>{ongoing ? "Ongoing" : duration(it.start, it.end)}</span>
+        {it.location && <span className="block">{it.location.replace(", India", "")}</span>}
+      </div>
+
+      <div className="flex items-start gap-4">
         {it.logo ? (
           <img src={it.logo} alt="" className="w-12 h-12 rounded-xl object-cover bg-chalk shrink-0" />
         ) : (
-          <span className="w-12 h-12 rounded-xl bg-panel border border-edge shrink-0 flex items-center justify-center font-serif italic text-xl text-mute">{it.org[0]}</span>
+          <span className="w-12 h-12 rounded-xl bg-panel border border-edge shrink-0 flex items-center justify-center font-serif italic text-2xl text-mute">{it.org[0]}</span>
         )}
-        <span className="flex-1 min-w-0">
-          <span className="flex items-baseline justify-between gap-4">
-            <span className="font-bold semi text-2xl md:text-[1.75rem] leading-tight tracking-[-0.01em]">{it.org}</span>
-            {has && <span className={`text-2xl text-mute transition-transform duration-500 ease-expo ${open ? "rotate-45 text-saffron" : ""}`}>+</span>}
-          </span>
-          <span className="block font-medium mt-1">{it.role}</span>
-          <span className="block label text-mute mt-1.5">
-            {it.when}
-            {it.location ? ` · ${it.location.replace(", India", "")}` : ""}
-          </span>
-        </span>
-      </button>
-      <div ref={body} className="overflow-hidden" style={{ height: 0 }}>
-        <div className="pl-16 pt-4">
-          {it.desc && <p className="text-chalk/85 leading-relaxed">{it.desc}</p>}
-          <ul className="mt-3 space-y-2 text-chalk/60 text-[15px] leading-relaxed">
-            {it.details.map((d) => (
-              <li key={d} className="flex gap-3">
-                <span className="text-saffron">—</span>
-                {d}
-              </li>
-            ))}
-          </ul>
+        <div>
+          <h3 className="font-semibold semi text-2xl md:text-[2rem] leading-none tracking-[-0.01em]">{it.org}</h3>
+          <p className="mt-2 text-chalk/75">{it.role}</p>
         </div>
+      </div>
+
+      <div>
+        {it.score && (
+          <p className="font-serif italic text-saffron text-4xl leading-none">{it.score}</p>
+        )}
+        {it.desc && <p className="text-chalk/85 leading-relaxed">{it.desc}</p>}
+        {it.details.length > 0 && (
+          <>
+            <button onClick={() => setOpen((o) => !o)} aria-expanded={open} className="group mt-4 inline-flex items-center gap-2 label text-mute hover:text-saffron">
+              {open ? "Less" : "More detail"}
+              <span className={`text-base leading-none transition-transform duration-500 ease-expo ${open ? "rotate-45 text-saffron" : ""}`}>+</span>
+            </button>
+            <div ref={body} className="overflow-hidden" style={{ height: 0 }}>
+              <ul className="pt-4 space-y-2.5 text-chalk/60 text-[15px] leading-relaxed">
+                {it.details.map((d) => (
+                  <li key={d} className="flex gap-3">
+                    <span className="text-saffron">—</span>
+                    {d}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
 }
 
+function Section({ title, kind, hover, setHover }: { title: string; kind: Kind; hover: string | null; setHover: (id: string | null) => void }) {
+  const list = items.filter((i) => i.kind === kind).sort((a, b) => b.start - a.start);
+  return (
+    <Reveal className="mt-28">
+      <div data-r className="flex items-baseline justify-between mb-6">
+        <h2 className="font-semibold semi text-4xl md:text-6xl tracking-[-0.015em]">{title}</h2>
+        <span className="label text-mute">({String(list.length).padStart(2, "0")})</span>
+      </div>
+      {list.map((it) => (
+        <Entry key={it.id} it={it} hover={hover} setHover={setHover} />
+      ))}
+    </Reveal>
+  );
+}
+
 export default function Experience() {
   const [hover, setHover] = useState<string | null>(null);
-  const byKind = (k: Kind) => items.filter((i) => i.kind === k).sort((a, b) => b.start - a.start);
 
   return (
     <div className="px-5 md:px-10 pt-28 md:pt-36 pb-24">
       <div className="label text-mute">(Experience)</div>
-      <h1 className="mt-6 font-bold semi text-[clamp(3rem,9vw,8.5rem)] leading-[0.88] tracking-[-0.03em] max-w-[14ch]">
+      <h1 className="mt-6 font-bold semi text-[clamp(3rem,9vw,8.5rem)] leading-[0.88] tracking-[-0.015em] max-w-[14ch]">
         Six years, <span className="font-serif italic font-normal text-saffron">at a glance.</span>
       </h1>
       <p className="mt-6 max-w-[46ch] text-chalk/70 text-lg">
@@ -195,28 +212,9 @@ export default function Experience() {
 
       <Timeline hover={hover} setHover={setHover} />
 
-      <div className="mt-28 grid md:grid-cols-2 gap-x-16 gap-y-20">
-        <Reveal>
-          <h2 data-r className="font-bold semi text-3xl md:text-4xl mb-6">Work experience</h2>
-          {byKind("work").map((it) => (
-            <Entry key={it.id} it={it} hover={hover} setHover={setHover} />
-          ))}
-        </Reveal>
-        <div className="flex flex-col gap-20">
-          <Reveal>
-            <h2 data-r className="font-bold semi text-3xl md:text-4xl mb-6">Community</h2>
-            {byKind("community").map((it) => (
-              <Entry key={it.id} it={it} hover={hover} setHover={setHover} />
-            ))}
-          </Reveal>
-          <Reveal>
-            <h2 data-r className="font-bold semi text-3xl md:text-4xl mb-6">Education</h2>
-            {byKind("education").map((it) => (
-              <Entry key={it.id} it={it} hover={hover} setHover={setHover} />
-            ))}
-          </Reveal>
-        </div>
-      </div>
+      <Section title="Work" kind="work" hover={hover} setHover={setHover} />
+      <Section title="Community" kind="community" hover={hover} setHover={setHover} />
+      <Section title="Education" kind="education" hover={hover} setHover={setHover} />
 
       <Reveal className="mt-28 grid md:grid-cols-[1fr_2fr] gap-8">
         <h2 data-r className="font-bold semi text-3xl md:text-4xl">Recognition</h2>
@@ -258,7 +256,7 @@ export default function Experience() {
       <TLink to="/contact" className="group mt-32 flex items-end justify-between gap-6 border-t border-edge pt-10">
         <span>
           <span className="label text-mute">Next</span>
-          <span className="block font-bold semi text-[clamp(2.6rem,7vw,6.5rem)] leading-none mt-3 tracking-[-0.03em] group-hover:text-saffron transition-colors">
+          <span className="block font-bold semi text-[clamp(2.6rem,7vw,6.5rem)] leading-none mt-3 tracking-[-0.015em] group-hover:text-saffron transition-colors">
             Say hello
           </span>
         </span>

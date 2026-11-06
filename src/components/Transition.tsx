@@ -73,7 +73,7 @@ export function TransitionProvider({ children }: { children: React.ReactNode }) 
         </div>
         <div className="bar-label absolute left-5 md:left-10 bottom-6 md:bottom-10 text-night opacity-0">
           <div className="label mb-3">Heading to</div>
-          <div className="font-black text-[clamp(3rem,11vw,10rem)] leading-[0.85] tracking-[-0.03em] semi">{label}</div>
+          <div className="font-black text-[clamp(3rem,11vw,10rem)] leading-[0.85] tracking-[-0.015em] semi">{label}</div>
         </div>
       </div>
     </TransitionCtx.Provider>

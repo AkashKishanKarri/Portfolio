@@ -1,0 +1,83 @@
+flowchart TD
+
+subgraph group_public["Public site"]
+  node_home["Home<br/>[page.tsx]"]
+  node_about["About<br/>[AboutTabs.tsx]"]
+  node_conference["Conference<br/>[page.tsx]"]
+  node_committees["Committees<br/>[page.tsx]"]
+  node_forms["Delegate forms<br/>[page.tsx]"]
+  node_content["Event content<br/>[config/]"]
+end
+
+subgraph group_registration["Registration"]
+  node_wizard["Registration wizard<br/>[RegistrationWizard.tsx]"]
+  node_schema["Validation<br/>[registration.ts]"]
+  node_actions["Registration actions<br/>[actions.ts]"]
+  node_pricing["Packages<br/>[pricing.ts]"]
+  node_payments["Payment providers<br/>[service.ts]"]
+  node_confirmation["Confirmation<br/>[page.tsx]"]
+end
+
+subgraph group_admin["Admin"]
+  node_login["Google sign-in<br/>[page.tsx]"]
+  node_proxy["Route guard<br/>[proxy.ts]"]
+  node_dal["Admin check<br/>[dal.ts]"]
+  node_admin_pages["Registrations & payments"]
+  node_admin_actions["Admin actions<br/>[actions.ts]"]
+  node_export["Excel export<br/>[export.ts]"]
+end
+
+subgraph group_supabase["Supabase"]
+  node_auth[("Auth")]
+  node_db[("Postgres + RLS")]
+  node_storage[("Storage: photos, proofs")]
+end
+
+node_home --> node_content
+node_committees --> node_content
+node_forms --> node_content
+node_wizard --> node_schema
+node_wizard -->|"submit"| node_actions
+node_actions --> node_pricing
+node_actions --> node_payments
+node_actions -->|"signed uploads"| node_storage
+node_actions -->|"insert"| node_db
+node_actions --> node_confirmation
+node_login --> node_auth
+node_proxy --> node_auth
+node_admin_pages --> node_dal
+node_dal --> node_db
+node_admin_pages --> node_admin_actions
+node_admin_actions -->|"verify payment"| node_db
+node_admin_actions --> node_storage
+node_admin_pages --> node_export
+node_export --> node_db
+
+click node_home "https://github.com/mdcgitam/GMUN/blob/main/app/page.tsx"
+click node_about "https://github.com/mdcgitam/GMUN/blob/main/components/sections/AboutTabs.tsx"
+click node_conference "https://github.com/mdcgitam/GMUN/blob/main/app/conference/page.tsx"
+click node_committees "https://github.com/mdcgitam/GMUN/blob/main/app/committees/page.tsx"
+click node_forms "https://github.com/mdcgitam/GMUN/blob/main/app/forms/page.tsx"
+click node_content "https://github.com/mdcgitam/GMUN/tree/main/config"
+click node_wizard "https://github.com/mdcgitam/GMUN/blob/main/components/registration/RegistrationWizard.tsx"
+click node_schema "https://github.com/mdcgitam/GMUN/blob/main/lib/validation/registration.ts"
+click node_actions "https://github.com/mdcgitam/GMUN/blob/main/lib/registration/actions.ts"
+click node_pricing "https://github.com/mdcgitam/GMUN/blob/main/config/pricing.ts"
+click node_payments "https://github.com/mdcgitam/GMUN/blob/main/lib/payments/service.ts"
+click node_confirmation "https://github.com/mdcgitam/GMUN/blob/main/app/confirmation/[registrationId]/page.tsx"
+click node_login "https://github.com/mdcgitam/GMUN/blob/main/app/admin/login/page.tsx"
+click node_proxy "https://github.com/mdcgitam/GMUN/blob/main/proxy.ts"
+click node_dal "https://github.com/mdcgitam/GMUN/blob/main/lib/supabase/dal.ts"
+click node_admin_pages "https://github.com/mdcgitam/GMUN/tree/main/app/admin/(protected)"
+click node_admin_actions "https://github.com/mdcgitam/GMUN/blob/main/lib/admin/actions.ts"
+click node_export "https://github.com/mdcgitam/GMUN/blob/main/lib/excel/export.ts"
+click node_db "https://github.com/mdcgitam/GMUN/tree/main/supabase/migrations"
+
+classDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554
+classDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+classDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+classDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+class node_home,node_about,node_conference,node_committees,node_forms,node_content toneBlue
+class node_wizard,node_schema,node_actions,node_pricing,node_payments,node_confirmation toneAmber
+class node_login,node_proxy,node_dal,node_admin_pages,node_admin_actions,node_export toneMint
+class node_auth,node_db,node_storage toneRose

@@ -20,7 +20,7 @@ export default function VariableName({ lines, className = "", align = [] }: { li
     });
     if (reduce) return;
 
-    const state = letters.map(() => ({ w: 260, s: 100 }));
+    const state = letters.map(() => ({ w: 240, s: 100 }));
     const mouse = { x: -9999, y: -9999 };
     let raf = 0;
     const onMove = (e: PointerEvent) => {
@@ -41,8 +41,8 @@ export default function VariableName({ lines, className = "", align = [] }: { li
           t = t * t * (3 - 2 * t);
         }
         const st = state[i];
-        st.w += (260 + 640 * t - st.w) * 0.14;
-        st.s += (100 - 32 * t - st.s) * 0.14;
+        st.w += (240 + 560 * t - st.w) * 0.14;
+        st.s += (100 - 25 * t - st.s) * 0.14;
         l.style.fontVariationSettings = `"wght" ${st.w.toFixed(1)}, "wdth" ${st.s.toFixed(1)}`;
       });
       raf = requestAnimationFrame(tick);
@@ -61,7 +61,7 @@ export default function VariableName({ lines, className = "", align = [] }: { li
         <div key={li} className={`whitespace-nowrap ${align[li] ?? ""}`} aria-hidden>
           {[...line].map((ch, i) => (
             <span key={i} className="mask">
-              <span className="vl inline-block" style={{ fontVariationSettings: '"wght" 260, "wdth" 100' }}>
+              <span className="vl inline-block" style={{ fontVariationSettings: '"wght" 240, "wdth" 100' }}>
                 {ch === " " ? " " : ch}
               </span>
             </span>

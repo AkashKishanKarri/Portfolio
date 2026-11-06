@@ -14,6 +14,7 @@ const SNAPSHOT: Record<string, Commit> = {
   "Vital-Vault": { sha: "08abda6", date: "2025-03-26" },
   RelativeGradingTool: { sha: "25906be", date: "2025-03-28" },
   "mdcgitam/tmcg-ideasprint-portal": { sha: "877ea14", date: "2026-10-05" },
+  "mdcgitam/GMUN": { sha: "89875de", date: "2026-10-26" },
 };
 
 const CACHE = "gh-latest-commits";

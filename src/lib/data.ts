@@ -12,10 +12,10 @@ export const profile = {
 };
 
 export const stats = [
-  { value: 9.74, decimals: 2, prefix: "", suffix: " / 10", label: "CGPA", icon: "graduation", fill: 97 },
-  { value: 100, decimals: 0, prefix: "+", suffix: "", label: "Community members led", icon: "users", fill: 80 },
-  { value: 90, decimals: 0, prefix: "", suffix: "K+", label: "Records managed & automated", icon: "database", fill: 90 },
-  { value: 200, decimals: 0, prefix: "+", suffix: "", label: "Students mentored", icon: "mentor", fill: 85 },
+  { value: 9.74, decimals: 2, prefix: "", suffix: " / 10", label: "CGPA", note: "B.Tech CSE · GITAM" },
+  { value: 100, decimals: 0, prefix: "+", suffix: "", label: "Community members led", note: "Vice President · MDC" },
+  { value: 90, decimals: 0, prefix: "", suffix: "K+", label: "Records managed & automated", note: "Data intern · DoER" },
+  { value: 200, decimals: 0, prefix: "+", suffix: "", label: "Students mentored", note: "Subject expert · Chitti" },
 ];
 
 export type Category = "Web" | "AI / ML" | "Tools";
@@ -43,6 +43,29 @@ export type Project = {
 export const categories: Category[] = ["Web", "AI / ML", "Tools"];
 
 export const projects: Project[] = [
+  {
+    slug: "gmun-platform",
+    title: "GMUN 5.0 Website & Registration Platform",
+    short: "GMUN 5.0",
+    summary: "Public site, delegate registration with UPI payment checks and an admin console for GITAM Model United Nations.",
+    category: "Web",
+    year: "2026",
+    role: "Full-stack · built with MDC",
+    featured: true,
+    bullets: [
+      "Built the public site and registration platform for GMUN 5.0 (31 Oct – 1 Nov 2026), covering seven committees, the conference schedule, FAQs and printable delegate forms.",
+      "Four-step registration wizard with live duplicate checks on email, phone and GITAM registration number, committee and portfolio preferences, and UPI payment verified by UTR and a screenshot uploaded straight to Supabase Storage through signed URLs.",
+      "Admin console behind Google sign-in to verify payments, move registrations through a status history, add notes, close committees and export everything to Excel.",
+    ],
+    tags: ["Next.js 16", "TypeScript", "Supabase", "Tailwind 4", "Framer Motion", "Zod"],
+    photos: ["/projects/gmun1.jpg", "/projects/gmun2.jpg", "/projects/gmun3.jpg", "/projects/gmun4.jpg"],
+    details:
+      "GMUN is one of Andhra Pradesh's largest Model UN conferences, and its registrations used to run on forms and spreadsheets. The platform replaces that: delegates pick a package, rank committees, pay by UPI and submit the UTR with a screenshot, and organisers verify each payment from a dashboard instead of a shared sheet. All event content lives in typed config files so organisers can change committees, pricing or FAQs without touching components, and payments sit behind a provider interface so a gateway like Razorpay or Cashfree can replace the manual QR flow without changing registration code. It runs on Vercel with Supabase for auth, Postgres (with row-level security) and file storage.",
+    repos: ["mdcgitam/GMUN"],
+    diagram: diagrams.gmun,
+    tint: "#B8924A",
+    liveUrl: "https://gmun.mdcgitam.in",
+  },
   {
     slug: "ideasprint-portal",
     title: "TMCG IdeaSprint 4.0 Portal",

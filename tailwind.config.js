@@ -18,7 +18,7 @@ export default {
         green: "#18A05E",
       },
       fontFamily: {
-        sans: ['"Archivo"', "system-ui", "sans-serif"],
+        sans: ['"Bricolage Grotesque"', "system-ui", "sans-serif"],
         serif: ['"Instrument Serif"', "Georgia", "serif"],
         mono: ['"JetBrains Mono"', "ui-monospace", "monospace"],
         hand: ['"Caveat"', "cursive"],

@@ -118,7 +118,7 @@ export default function Contact() {
   return (
     <div className="px-5 md:px-10 pt-28 md:pt-36 pb-24">
       <div className="grid md:grid-cols-[1.4fr_1fr] gap-6 items-end mb-14">
-        <h1 ref={titleRef} className="font-bold semi text-[clamp(3rem,9vw,8.5rem)] leading-[0.88] tracking-[-0.03em]">
+        <h1 ref={titleRef} className="font-bold semi text-[clamp(3rem,9vw,8.5rem)] leading-[0.88] tracking-[-0.015em]">
           {["Write", "me a"].map((w) => (
             <span key={w} className="mask mr-[0.2em]">
               <span className="t inline-block">{w}</span>

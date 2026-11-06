@@ -11,7 +11,7 @@ export default function Footer() {
     <footer className="border-t border-edge px-5 md:px-10 pt-14 pb-8">
       <div className="grid md:grid-cols-[1.5fr_1fr_1fr] gap-10">
         <div>
-          <a href={`mailto:${profile.email}`} className="font-bold semi text-[clamp(1.4rem,3vw,2.4rem)] tracking-[-0.02em] hover:text-saffron transition-colors break-all">
+          <a href={`mailto:${profile.email}`} className="font-bold semi text-[clamp(1.4rem,3vw,2.4rem)] tracking-[-0.01em] hover:text-saffron transition-colors break-all">
             {profile.email}
           </a>
           <div className="label text-mute mt-3">{profile.location}</div>

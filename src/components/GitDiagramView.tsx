@@ -24,7 +24,7 @@ export default function GitDiagramView({ repo, diagram }: { repo: string; diagra
           securityLevel: "loose",
           theme: "base",
           themeVariables: {
-            fontFamily: "Archivo, system-ui, sans-serif",
+            fontFamily: "Bricolage Grotesque, system-ui, sans-serif",
             fontSize: "14px",
             lineColor: "#1f1f1f",
             primaryTextColor: "#0f172a",

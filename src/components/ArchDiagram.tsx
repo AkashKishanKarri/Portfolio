@@ -181,7 +181,7 @@ export default function ArchDiagram({ diagram, compact = false, className = "" }
                 <g style={{ opacity: linked(n.id) ? 1 : 0.3, transition: "opacity .3s" }}>
                 <rect x={b.x} y={b.y} width={b.w} height={b.h} rx={10} fill={`${k.color}14`} stroke={hover === n.id ? k.color : `${k.color}80`} strokeWidth={hover === n.id ? 1.6 : 1} />
                 <rect x={b.x} y={b.y + 12} width={3} height={b.h - 24} rx={1.5} fill={k.color} />
-                <text x={b.x + 14} y={b.y + (n.sub ? 25 : 34)} fill="#EDEAE3" fontSize={13.5} fontWeight={600} fontFamily="Archivo, sans-serif">
+                <text x={b.x + 14} y={b.y + (n.sub ? 25 : 34)} fill="#EDEAE3" fontSize={13.5} fontWeight={600} fontFamily="Bricolage Grotesque, sans-serif">
                   {n.label}
                 </text>
                 {n.sub && (

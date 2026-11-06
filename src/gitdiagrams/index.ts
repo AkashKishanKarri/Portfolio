@@ -9,6 +9,7 @@ import Rooster from "./Rooster-Generator.mmd?raw";
 import VitalVault from "./Vital-Vault.mmd?raw";
 import Grading from "./RelativeGradingTool.mmd?raw";
 import IdeaSprint from "./tmcg-ideasprint-portal.mmd?raw";
+import GMUN from "./GMUN.mmd?raw";
 
 export type GitDiagram = { code: string; generated: boolean };
 
@@ -21,4 +22,5 @@ export const gitdiagrams: Record<string, GitDiagram> = {
   "Vital-Vault": { code: VitalVault, generated: false },
   RelativeGradingTool: { code: Grading, generated: false },
   "mdcgitam/tmcg-ideasprint-portal": { code: IdeaSprint, generated: true },
+  "mdcgitam/GMUN": { code: GMUN, generated: false },
 };

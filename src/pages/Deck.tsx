@@ -167,7 +167,7 @@ export default function Deck() {
         {/* big counter */}
         <div className="absolute left-5 lg:left-0 bottom-4 lg:bottom-8 flex items-end gap-3 pointer-events-none">
           <span className="mask">
-            <div ref={numRef} className="font-black semi text-[clamp(5rem,12vw,10rem)] leading-[0.8] tracking-[-0.04em]">
+            <div ref={numRef} className="font-black semi text-[clamp(5rem,12vw,10rem)] leading-[0.8] tracking-[-0.025em]">
               {String(active + 1).padStart(2, "0")}
             </div>
           </span>
