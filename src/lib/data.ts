@@ -264,6 +264,7 @@ export const leadership = [
     title: "Member → Vice President",
     org: "MDC, GITAM University",
     logo: "/projects/mdclogo.webp",
+    accent: "#4F5BD5",
     location: "Visakhapatnam, India",
     desc: "Joined as a member in Apr 2025, built the club's official website, and was elected Vice President for Jun 2026 – Jun 2027. Now help lead a 100+ student community.",
     details: [
@@ -281,6 +282,7 @@ export const internships = [
     title: "Associate Software Engineering Intern",
     org: "Accenture",
     logo: "/projects/accenture.png",
+    accent: "#A100FF",
     location: "Hyderabad, India",
     desc: "Supported Oracle APEX, FCCS, and EPBCS applications through maintenance, configuration, user support, data-quality checks, and issue investigation.",
     details: [
@@ -295,6 +297,7 @@ export const internships = [
     title: "Web Development Intern",
     org: "CXR, GITAM University",
     logo: "/projects/cxr.jpeg",
+    accent: "#14B8A6",
     location: "Visakhapatnam, India",
     desc: "Developed a React and Firebase inventory-reservation platform; designed booking workflows to handle concurrency and real-time data challenges.",
     details: [
@@ -308,6 +311,7 @@ export const internships = [
     title: "Data Management Intern",
     org: "DoER, GITAM University",
     logo: "/projects/doer.jpeg",
+    accent: "#0E7C6B",
     location: "Visakhapatnam, India",
     desc: "Managed records for 90,000+ individuals using Excel, Google Sheets, and Python; reduced manual effort by 40% through automation and validation.",
     details: [
@@ -321,6 +325,7 @@ export const internships = [
     title: "Subject Matter Expert",
     org: "Chitti, GITAM University Startup",
     logo: "/projects/chitti.jpeg",
+    accent: "#F2A51A",
     location: "Visakhapatnam, India",
     desc: "Mentored 200+ students in DBMS, Operating Systems, DSA, and Computer Networks.",
     details: [
@@ -331,9 +336,9 @@ export const internships = [
 ];
 
 export const education = [
-  { when: "Aug 2023 - May 2027", school: "GITAM University, Visakhapatnam", degree: "B.Tech in Computer Science and Engineering", score: "9.74 CGPA", percent: 97, level: "Undergraduate" },
-  { when: "Aug 2021 - May 2023", school: "FIITJEE, Visakhapatnam", degree: "Intermediate (MPC)", score: "88%", percent: 88, level: "Higher Secondary" },
-  { when: "Jul 2020 - Apr 2021", school: "Sri Chaitanya School, Visakhapatnam", degree: "Secondary School Certificate (SSC)", score: "96%", percent: 96, level: "Secondary" },
+  { when: "Aug 2023 - May 2027", school: "GITAM University, Visakhapatnam", degree: "B.Tech in Computer Science and Engineering", score: "9.74 CGPA", percent: 97, level: "Undergraduate", accent: "#0B6E4F" },
+  { when: "Aug 2021 - May 2023", school: "FIITJEE, Visakhapatnam", degree: "Intermediate (MPC)", score: "88%", percent: 88, level: "Higher Secondary", accent: "#C8102E" },
+  { when: "Jul 2020 - Apr 2021", school: "Sri Chaitanya School, Visakhapatnam", degree: "Secondary School Certificate (SSC)", score: "96%", percent: 96, level: "Secondary", accent: "#1D4ED8" },
 ];
 
 export const achievements = [

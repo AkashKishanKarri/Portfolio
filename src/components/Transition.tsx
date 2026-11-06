@@ -8,7 +8,8 @@ type Go = (to: string) => void;
 const TransitionCtx = createContext<Go>(() => {});
 const BARS = 6;
 
-export function pageLabel(path: string) {
+export function pageLabel(full: string) {
+  const path = full.split("#")[0];
   if (path === "/") return "Home";
   if (path === "/work/deck") return "The Deck";
   if (path.startsWith("/work/")) return projects.find((p) => `/work/${p.slug}` === path)?.title ?? "Work";

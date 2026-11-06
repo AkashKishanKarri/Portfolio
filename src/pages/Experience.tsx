@@ -4,14 +4,16 @@ import { internships, leadership, education, achievements, certifications, skill
 import Reveal from "@/components/Reveal";
 import { TLink } from "@/components/Transition";
 import { NOW, duration, span } from "@/lib/dates";
+import { BadgeRail } from "@/components/Badges";
+import { useLocation } from "react-router-dom";
 
 type Kind = "work" | "community" | "education";
-type Item = { id: string; kind: Kind; org: string; role: string; when: string; location?: string; score?: string; desc?: string; details: string[]; logo?: string; start: number; end: number };
+type Item = { id: string; kind: Kind; org: string; role: string; when: string; location?: string; score?: string; accent: string; desc?: string; details: string[]; logo?: string; start: number; end: number };
 
 const items: Item[] = [
-  ...internships.map((e) => ({ id: e.title + e.org, kind: "work" as Kind, org: e.org.split(",")[0], role: e.title, when: e.when, location: e.location, desc: e.desc, details: e.details, logo: e.logo, ...span(e.when) })),
-  ...leadership.map((e) => ({ id: e.title + e.org, kind: "community" as Kind, org: e.org.split(",")[0], role: e.title, when: e.when, location: e.location, desc: e.desc, details: e.details, logo: e.logo, ...span(e.when) })),
-  ...education.map((e) => ({ id: e.school, kind: "education" as Kind, org: e.school.split(",")[0], role: e.degree, score: e.score, when: e.when, location: e.school.split(", ")[1], details: [], ...span(e.when) })),
+  ...internships.map((e) => ({ id: e.title + e.org, kind: "work" as Kind, org: e.org.split(",")[0], role: e.title, when: e.when, location: e.location, desc: e.desc, details: e.details, logo: e.logo, accent: e.accent, ...span(e.when) })),
+  ...leadership.map((e) => ({ id: e.title + e.org, kind: "community" as Kind, org: e.org.split(",")[0], role: e.title, when: e.when, location: e.location, desc: e.desc, details: e.details, logo: e.logo, accent: e.accent, ...span(e.when) })),
+  ...education.map((e) => ({ id: e.school, kind: "education" as Kind, org: e.school.split(",")[0], role: e.degree, score: e.score, when: e.when, location: e.school.split(", ")[1], accent: e.accent, details: [], ...span(e.when) })),
 ];
 
 const KIND: Record<Kind, { label: string; bar: string; dot: string }> = {
@@ -24,7 +26,7 @@ const T0 = 2020.4;
 const T1 = 2027.6;
 const pct = (t: number) => ((t - T0) / (T1 - T0)) * 100;
 
-function Timeline({ hover, setHover }: { hover: string | null; setHover: (id: string | null) => void }) {
+function Timeline({ hover, setHover, onPick }: { hover: string | null; setHover: (id: string | null) => void; onPick: (id: string) => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const rows = [...items].sort((a, b) => a.start - b.start);
 
@@ -68,7 +70,7 @@ function Timeline({ hover, setHover }: { hover: string | null; setHover: (id: st
             <div
               key={it.id}
               onMouseEnter={() => setHover(it.id)}
-              onClick={() => document.getElementById(`x-${it.id}`)?.scrollIntoView({ behavior: "smooth", block: "center" })}
+              onClick={() => onPick(it.id)}
               className={`grid grid-cols-[30%_1fr] md:grid-cols-[22%_1fr] items-center cursor-pointer transition-opacity duration-300 ${dim ? "opacity-25" : ""}`}
             >
               <div className="pr-4 truncate">
@@ -106,98 +108,75 @@ function Timeline({ hover, setHover }: { hover: string | null; setHover: (id: st
   );
 }
 
-function Entry({ it, hover, setHover }: { it: Item; hover: string | null; setHover: (id: string | null) => void }) {
-  const [open, setOpen] = useState(false);
-  const body = useRef<HTMLDivElement>(null);
+function Detail({ it }: { it: Item }) {
+  const ref = useRef<HTMLDivElement>(null);
   const ongoing = it.end > NOW;
-
   useEffect(() => {
-    const el = body.current;
-    if (!el) return;
-    if (open) {
-      el.style.height = "auto";
-      const h = el.offsetHeight;
-      animate(el, { height: [0, h], duration: 700, ease: "outExpo" }).then(() => (el.style.height = "auto"));
-      animate(el.querySelectorAll("li"), { opacity: [0, 1], translateY: [14, 0], duration: 700, delay: stagger(60, { start: 120 }), ease: "outExpo" });
-    } else {
-      animate(el, { height: [el.offsetHeight, 0], duration: 500, ease: "outExpo" });
-    }
-  }, [open]);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    animate(ref.current!.querySelectorAll("[data-d]"), { opacity: [0, 1], translateY: [16, 0], duration: 700, delay: stagger(50), ease: "outExpo" });
+  }, [it.id]);
 
   return (
-    <div
-      id={`x-${it.id}`}
-      data-r
-      onMouseEnter={() => setHover(it.id)}
-      onMouseLeave={() => setHover(null)}
-      className="relative grid md:grid-cols-[12rem_1fr_1.3fr] gap-x-10 gap-y-4 py-8 md:py-10 border-t border-edge"
-    >
-      <span
-        className={`absolute left-0 -top-px h-px w-full origin-left bg-saffron transition-transform duration-700 ease-expo ${hover === it.id ? "scale-x-100" : "scale-x-0"}`}
-      />
-      <div className="label text-mute leading-relaxed">
-        <span className="block text-chalk/80">{it.when.replace(" - ", " – ")}</span>
-        <span className={`block ${ongoing ? "text-saffron" : ""}`}>{ongoing ? "Ongoing" : duration(it.start, it.end)}</span>
-        {it.location && <span className="block">{it.location.replace(", India", "")}</span>}
-      </div>
-
-      <div className="flex items-start gap-4">
-        {it.logo ? (
-          <img src={it.logo} alt="" className="w-12 h-12 rounded-xl object-cover bg-chalk shrink-0" />
-        ) : (
-          <span className="w-12 h-12 rounded-xl bg-panel border border-edge shrink-0 flex items-center justify-center font-serif italic text-2xl text-mute">{it.org[0]}</span>
-        )}
-        <div>
-          <h3 className="font-semibold semi text-2xl md:text-[2rem] leading-none tracking-[-0.01em]">{it.org}</h3>
-          <p className="mt-2 text-chalk/75">{it.role}</p>
-        </div>
-      </div>
-
+    <div ref={ref} className="grid md:grid-cols-[1fr_1.4fr] gap-x-16 gap-y-6 border-t border-edge pt-10 mt-2">
       <div>
-        {it.score && (
-          <p className="font-serif italic text-saffron text-4xl leading-none">{it.score}</p>
-        )}
-        {it.desc && <p className="text-chalk/85 leading-relaxed">{it.desc}</p>}
-        {it.details.length > 0 && (
-          <>
-            <button onClick={() => setOpen((o) => !o)} aria-expanded={open} className="group mt-4 inline-flex items-center gap-2 label text-mute hover:text-saffron">
-              {open ? "Less" : "More detail"}
-              <span className={`text-base leading-none transition-transform duration-500 ease-expo ${open ? "rotate-45 text-saffron" : ""}`}>+</span>
-            </button>
-            <div ref={body} className="overflow-hidden" style={{ height: 0 }}>
-              <ul className="pt-4 space-y-2.5 text-chalk/60 text-[15px] leading-relaxed">
-                {it.details.map((d) => (
-                  <li key={d} className="flex gap-3">
-                    <span className="text-saffron">—</span>
-                    {d}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </>
-        )}
+        <div data-d className="label text-saffron">
+          {it.when.replace(" - ", " – ")} · {ongoing ? "Ongoing" : duration(it.start, it.end)}
+        </div>
+        <h3 data-d className="mt-4 font-semibold semi text-4xl md:text-5xl leading-none tracking-[-0.015em]">{it.org}</h3>
+        <p data-d className="mt-3 text-lg text-chalk/75">{it.role}</p>
+        {it.location && <p data-d className="label text-mute mt-4">{it.location.replace(", India", "")}</p>}
+        {it.score && <p data-d className="mt-6 font-serif italic text-saffron text-5xl">{it.score}</p>}
+      </div>
+      <div>
+        {it.desc && <p data-d className="text-xl leading-relaxed text-chalk/90">{it.desc}</p>}
+        <ul className="mt-6 space-y-3 text-chalk/60 leading-relaxed">
+          {it.details.map((d) => (
+            <li data-d key={d} className="flex gap-3">
+              <span className="text-saffron">—</span>
+              {d}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
 }
 
-function Section({ title, kind, hover, setHover }: { title: string; kind: Kind; hover: string | null; setHover: (id: string | null) => void }) {
-  const list = items.filter((i) => i.kind === kind).sort((a, b) => b.start - a.start);
+function Rail({ title, note, list, selected, setSelected }: { title: string; note: string; list: Item[]; selected: string; setSelected: (id: string) => void }) {
+  const mine = list.some((i) => i.id === selected);
+  const [last, setLast] = useState(list[list.length - 1].id);
+  useEffect(() => {
+    if (mine) setLast(selected);
+  }, [selected]);
+  const current = list.find((i) => i.id === (mine ? selected : last))!;
   return (
-    <Reveal className="mt-28">
-      <div data-r className="flex items-baseline justify-between mb-6">
+    <section id={`rail-${title}`} className="mt-32 scroll-mt-24">
+      <div className="flex flex-wrap items-end justify-between gap-4 mb-12">
         <h2 className="font-semibold semi text-4xl md:text-6xl tracking-[-0.015em]">{title}</h2>
-        <span className="label text-mute">({String(list.length).padStart(2, "0")})</span>
+        <span className="label text-mute">{note}</span>
       </div>
-      {list.map((it) => (
-        <Entry key={it.id} it={it} hover={hover} setHover={setHover} />
-      ))}
-    </Reveal>
+      <BadgeRail items={list} selected={mine ? selected : null} onPick={setSelected} />
+      <Detail it={current} />
+    </section>
   );
 }
 
 export default function Experience() {
   const [hover, setHover] = useState<string | null>(null);
+  const jobs = items.filter((i) => i.kind !== "education").sort((a, b) => a.start - b.start);
+  const schools = items.filter((i) => i.kind === "education").sort((a, b) => a.start - b.start);
+  const { hash } = useLocation();
+  const [selected, setSelected] = useState(() => decodeURIComponent(hash.slice(1)) || jobs[jobs.length - 1].id);
+  const pick = (id: string) => {
+    setSelected(id);
+    const rail = items.find((i) => i.id === id)?.kind === "education" ? "Education" : "Work & community";
+    document.getElementById(`rail-${rail}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+  useEffect(() => {
+    if (!hash) return;
+    const t = setTimeout(() => pick(decodeURIComponent(hash.slice(1))), 400);
+    return () => clearTimeout(t);
+  }, []);
 
   return (
     <div className="px-5 md:px-10 pt-28 md:pt-36 pb-24">
@@ -206,15 +185,14 @@ export default function Experience() {
         Six years, <span className="font-serif italic font-normal text-saffron">at a glance.</span>
       </h1>
       <p className="mt-6 max-w-[46ch] text-chalk/70 text-lg">
-        School, college, internships and community work on one timeline. Hover a bar to find it below, or open any entry for
+        School, college, internships and community work on one timeline. Click a bar, or a badge below, for
         the full story.
       </p>
 
-      <Timeline hover={hover} setHover={setHover} />
+      <Timeline hover={hover} setHover={setHover} onPick={pick} />
 
-      <Section title="Work" kind="work" hover={hover} setHover={setHover} />
-      <Section title="Community" kind="community" hover={hover} setHover={setHover} />
-      <Section title="Education" kind="education" hover={hover} setHover={setHover} />
+      <Rail title="Work & community" note="Tap a badge for the story" list={jobs} selected={selected} setSelected={setSelected} />
+      <Rail title="Education" note="Student IDs, oldest first" list={schools} selected={selected} setSelected={setSelected} />
 
       <Reveal className="mt-28 grid md:grid-cols-[1fr_2fr] gap-8">
         <h2 data-r className="font-bold semi text-3xl md:text-4xl">Recognition</h2>

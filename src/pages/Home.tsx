@@ -2,13 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { animate, stagger } from "animejs";
 import VariableName from "@/components/VariableName";
 import Reveal from "@/components/Reveal";
-import { TLink } from "@/components/Transition";
-import { projects as allProjects, previewOf, stats, internships, leadership } from "@/lib/data";
+import { TLink, useGo } from "@/components/Transition";
+import { projects as allProjects, previewOf, internships, leadership } from "@/lib/data";
 import Scramble from "@/components/Scramble";
 import { createHoverGL, type HoverGL } from "@/lib/hoverGL";
 
-import { useCountUp, useInView } from "@/lib/hooks";
-import { NOW, duration, span } from "@/lib/dates";
+import { span } from "@/lib/dates";
+import Receipt from "@/components/Receipt";
+import { BadgeRail, type BadgeItem } from "@/components/Badges";
 
 const roles = ["Full-stack developer", "Vice President at MDC", "CS at GITAM, class of '27", "Building web, ML & tools"];
 
@@ -145,36 +146,6 @@ function SelectedWork() {
   );
 }
 
-function Stat({ s, i, run }: { s: (typeof stats)[number]; i: number; run: boolean }) {
-  const v = useCountUp(s.value, run, s.decimals);
-  const outOf = s.suffix.includes("/ 10");
-  return (
-    <div data-r className="group relative flex flex-col justify-between gap-10 bg-night p-5 md:p-7 min-h-[13rem] md:min-h-[16rem]">
-      <div className="flex justify-between label text-mute">
-        <span className="text-saffron">{String(i + 1).padStart(2, "0")}</span>
-        <span className="hidden sm:block text-right">{s.note}</span>
-      </div>
-      <div>
-        <div className="font-semibold semi text-[clamp(3rem,6vw,5.75rem)] leading-[0.85] tracking-[-0.025em] tabular-nums">
-          {s.prefix === "+" ? "" : s.prefix}
-          {v}
-          <span className="text-saffron">{s.prefix === "+" ? "+" : s.suffix.replace(" / 10", "")}</span>
-          {outOf && <span className="text-mute text-[0.32em] ml-1.5 tracking-normal font-normal">/ 10</span>}
-        </div>
-        <div className="mt-4 text-chalk/70 text-[15px]">{s.label}</div>
-      </div>
-      <span className="absolute left-0 bottom-0 h-px w-full origin-left scale-x-0 bg-saffron transition-transform duration-700 ease-expo group-hover:scale-x-100" />
-    </div>
-  );
-}
-
-const facts = [
-  ["Based in", "Visakhapatnam, India"],
-  ["Studying", "B.Tech CSE, GITAM"],
-  ["Leading", "MDC, 100+ members"],
-  ["Status", "Open to internships"],
-];
-
 const statement = [
   "I'm Akash, a CS student at GITAM ('27) and Vice President of MDC.",
   "I build *things people actually use,* then stick around to *run them.*",
@@ -182,7 +153,6 @@ const statement = [
 
 function About() {
   const ref = useRef<HTMLParagraphElement>(null);
-  const [statsRef, statsOn] = useInView<HTMLDivElement>(0.3);
   useEffect(() => {
     const el = ref.current!;
     const words = el.querySelectorAll(".w");
@@ -202,128 +172,64 @@ function About() {
 
   return (
     <section id="about" className="px-5 md:px-10 py-24 md:py-32 border-t border-edge">
-      <div className="grid md:grid-cols-[1fr_3fr] gap-8">
-        <div className="flex flex-col justify-between gap-10">
-          <div className="label text-mute pt-3">(About)</div>
-          <dl className="hidden md:block text-[14px]">
-            {facts.map(([k, v]) => (
-              <div key={k} className="flex justify-between gap-4 border-t border-edge py-2.5 pr-8">
-                <dt className="text-mute">{k}</dt>
-                <dd>{v}</dd>
-              </div>
+      <div className="grid lg:grid-cols-[1.5fr_1fr] gap-16 lg:gap-20 items-start">
+        <div>
+          <div className="label text-mute mb-8">(About)</div>
+          <p ref={ref} className="text-[clamp(1.7rem,3.4vw,3.1rem)] leading-[1.12] tracking-[-0.01em] font-medium">
+            {statement.map((line, li) => (
+              // *starred* phrases are set in the italic serif
+              <span key={li} className="block">
+                {line.split("*").map((part, pi) =>
+                  part
+                    .split(" ")
+                    .filter(Boolean)
+                    .map((w, wi) => (
+                      <span key={`${pi}-${wi}`} className={`w ${pi % 2 ? "font-serif italic text-saffron font-normal" : ""}`}>
+                        {w}{" "}
+                      </span>
+                    ))
+                )}
+              </span>
             ))}
-          </dl>
+          </p>
+          <p className="mt-10 max-w-[44ch] text-chalk/60 text-lg">
+            The short version is on the receipt. Prices are negotiable, internships especially.
+          </p>
         </div>
-        <p ref={ref} className="text-[clamp(1.7rem,3.6vw,3.3rem)] leading-[1.12] tracking-[-0.015em] font-medium">
-          {statement.map((line, li) => (
-            // *starred* phrases are set in the italic serif
-            <span key={li} className="block">
-              {line.split("*").map((part, pi) =>
-                part
-                  .split(" ")
-                  .filter(Boolean)
-                  .map((w, wi) => (
-                    <span key={`${pi}-${wi}`} className={`w ${pi % 2 ? "font-serif italic text-saffron font-normal" : ""}`}>
-                      {w}{" "}
-                    </span>
-                  ))
-              )}
-            </span>
-          ))}
-        </p>
-      </div>
-      <div ref={statsRef}>
-        <Reveal className="grid grid-cols-2 md:grid-cols-4 gap-px bg-edge border-y border-edge mt-16 md:mt-24">
-          {stats.map((s, i) => (
-            <Stat key={s.label} s={s} i={i} run={statsOn} />
-          ))}
-        </Reveal>
+        <Receipt />
       </div>
     </section>
   );
 }
 
-// Each role is a bar on one shared time axis, so overlaps and the current roles read at a glance.
-const AX0 = 2025;
-const AX1 = 2027.5;
-const ax = (t: number) => ((Math.min(Math.max(t, AX0), AX1) - AX0) / (AX1 - AX0)) * 100;
-
+// Every org as the ID badge that came with it, hanging on a rail, oldest on the left.
 function ExperienceTeaser() {
-  const rows = [...internships, ...leadership]
-    .map((e) => ({ ...e, ...span(e.when) }))
-    .sort((a, b) => b.start - a.start);
-  const [ref, on] = useInView<HTMLUListElement>(0.2);
+  const go = useGo();
+  const items: BadgeItem[] = [...internships, ...leadership]
+    .map((e) => ({
+      id: e.title + e.org,
+      org: e.org.split(",")[0],
+      role: e.title,
+      when: e.when,
+      accent: e.accent,
+      logo: e.logo,
+      kind: (leadership.includes(e as (typeof leadership)[number]) ? "community" : "work") as BadgeItem["kind"],
+      ...span(e.when),
+    }))
+    .sort((a, b) => a.start - b.start);
 
   return (
-    <section className="px-5 md:px-10 py-24 md:py-32 border-t border-edge">
-      <div className="flex flex-wrap items-end justify-between gap-6 mb-12">
-        <h2 className="font-semibold semi text-[clamp(2.6rem,6vw,5.5rem)] leading-[0.9] tracking-[-0.015em]">
-          Where I&apos;ve <span className="font-serif italic font-normal text-saffron">been</span>
-        </h2>
+    <section className="px-5 md:px-10 py-24 md:py-32 border-t border-edge overflow-hidden">
+      <div className="flex flex-wrap items-end justify-between gap-6 mb-14">
+        <div>
+          <h2 className="font-semibold semi text-[clamp(2.6rem,6vw,5.5rem)] leading-[0.9] tracking-[-0.015em]">
+            Where I&apos;ve <span className="font-serif italic font-normal text-saffron">been</span>
+          </h2>
+          <p className="mt-4 text-chalk/60">Every ID card I&apos;ve been handed so far. Give them a push.</p>
+        </div>
         <TLink to="/experience" className="label hover:text-saffron">Full experience →</TLink>
       </div>
-
-      <div className="hidden lg:grid grid-cols-[3rem_1.1fr_1.6fr_9rem] gap-x-8 label text-mute pb-3">
-        <span>No.</span>
-        <span>Role</span>
-        <span className="relative h-4">
-          {[2025, 2026, 2027].map((y) => (
-            <span key={y} className="absolute -translate-x-1/2" style={{ left: `${ax(y)}%` }}>{y}</span>
-          ))}
-        </span>
-        <span className="text-right">Dates</span>
-      </div>
-
-      <ul ref={ref}>
-        {rows.map((e, i) => {
-          const ongoing = e.end > NOW;
-          return (
-            <li key={e.title + e.org}>
-              <TLink
-                to="/experience"
-                className="group grid grid-cols-[2rem_1fr] lg:grid-cols-[3rem_1.1fr_1.5fr_11rem] items-center gap-x-4 lg:gap-x-8 gap-y-3 py-6 border-t border-edge"
-              >
-                <span className="font-mono text-xs text-mute group-hover:text-saffron transition-colors">{String(i + 1).padStart(2, "0")}</span>
-                <span className="flex items-center gap-4 min-w-0">
-                  <img src={e.logo} alt="" className="w-10 h-10 rounded-lg object-cover bg-chalk shrink-0" />
-                  <span className="min-w-0">
-                    <span className="block font-semibold semi text-2xl md:text-3xl leading-none tracking-[-0.01em] transition-transform duration-500 ease-expo group-hover:translate-x-1.5">
-                      {e.org.split(",")[0]}
-                    </span>
-                    <span className="block text-chalk/60 text-[15px] mt-1.5 truncate">{e.title}</span>
-                  </span>
-                </span>
-                <span className="relative hidden lg:block h-2.5">
-                  <span className="absolute inset-x-0 top-1/2 h-px bg-edge" />
-                  {[2026, 2027].map((y) => (
-                    <span key={y} className="absolute top-0 bottom-0 w-px bg-edge" style={{ left: `${ax(y)}%` }} />
-                  ))}
-                  <span className="absolute -top-3 -bottom-3 w-px bg-saffron/60" style={{ left: `${ax(NOW)}%` }} />
-                  <span
-                    className="absolute top-0 bottom-0 rounded-full bg-chalk/80 group-hover:bg-saffron origin-left transition-[transform,background-color] duration-[1200ms] ease-expo"
-                    style={{
-                      left: `${ax(e.start)}%`,
-                      width: `${Math.max(1.5, ax(Math.min(e.end, NOW)) - ax(e.start))}%`,
-                      transform: on ? "scaleX(1)" : "scaleX(0)",
-                      transitionDelay: on ? `${i * 90}ms, 0ms` : "0ms",
-                    }}
-                  />
-                  {ongoing && (
-                    <span
-                      className="absolute top-0 bottom-0 rounded-r-full border border-dashed border-chalk/40"
-                      style={{ left: `${ax(NOW)}%`, width: `${ax(e.end) - ax(NOW)}%` }}
-                    />
-                  )}
-                </span>
-                <span className="col-start-2 lg:col-start-auto label text-mute lg:text-right whitespace-nowrap">
-                  {e.when.replace(" - ", " – ")}
-                  <span className={`block mt-1 ${ongoing ? "text-saffron" : ""}`}>{ongoing ? "Ongoing" : duration(e.start, e.end)}</span>
-                </span>
-              </TLink>
-            </li>
-          );
-        })}
-      </ul>
+      <BadgeRail items={items} onPick={(id) => go(`/experience#${encodeURIComponent(id)}`)} />
     </section>
   );
 }
