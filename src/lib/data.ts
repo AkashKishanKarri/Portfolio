@@ -11,13 +11,6 @@ export const profile = {
   location: "Visakhapatnam, India",
 };
 
-export const stats = [
-  { value: 9.74, decimals: 2, prefix: "", suffix: " / 10", label: "CGPA", note: "B.Tech CSE · GITAM" },
-  { value: 100, decimals: 0, prefix: "+", suffix: "", label: "Community members led", note: "Vice President · MDC" },
-  { value: 90, decimals: 0, prefix: "", suffix: "K+", label: "Records managed & automated", note: "Data intern · DoER" },
-  { value: 200, decimals: 0, prefix: "+", suffix: "", label: "Students mentored", note: "Subject expert · Chitti" },
-];
-
 export type Category = "Web" | "AI / ML" | "Tools";
 
 export type Project = {

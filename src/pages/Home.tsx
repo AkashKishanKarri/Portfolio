@@ -8,7 +8,8 @@ import Scramble from "@/components/Scramble";
 import { createHoverGL, type HoverGL } from "@/lib/hoverGL";
 
 import { span } from "@/lib/dates";
-import Receipt from "@/components/Receipt";
+import Odometer from "@/components/Odometer";
+import { useInView } from "@/lib/hooks";
 import { BadgeRail, type BadgeItem } from "@/components/Badges";
 
 const roles = ["Full-stack developer", "Vice President at MDC", "CS at GITAM, class of '27", "Building web, ML & tools"];
@@ -151,8 +152,18 @@ const statement = [
   "I build *things people actually use,* then stick around to *run them.*",
 ];
 
+// The numbers live inside a sentence: each one rolls like an odometer next to the logo of
+// the place it came from.
+const tally: { lead: string; value: string; logo?: string; org: string; tail: string }[] = [
+  { lead: "So far that's a", value: "9.74", org: "GITAM", tail: "CGPA," },
+  { lead: "", value: "100+", logo: "/projects/mdclogo.webp", org: "MDC", tail: "developers in my community," },
+  { lead: "", value: "90K", logo: "/projects/doer.jpeg", org: "DoER", tail: "records cleaned and automated," },
+  { lead: "and", value: "200+", logo: "/projects/chitti.jpeg", org: "Chitti", tail: "students mentored." },
+];
+
 function About() {
   const ref = useRef<HTMLParagraphElement>(null);
+  const [tallyRef, tallyOn] = useInView<HTMLParagraphElement>(0.4);
   useEffect(() => {
     const el = ref.current!;
     const words = el.querySelectorAll(".w");
@@ -171,11 +182,11 @@ function About() {
   }, []);
 
   return (
-    <section id="about" className="px-5 md:px-10 py-24 md:py-32 border-t border-edge">
-      <div className="grid lg:grid-cols-[1.5fr_1fr] gap-16 lg:gap-20 items-start">
+    <section id="about" className="px-5 md:px-10 py-24 md:py-36 border-t border-edge">
+      <div className="grid md:grid-cols-[1fr_3fr] gap-8">
+        <div className="label text-mute pt-3">(About)</div>
         <div>
-          <div className="label text-mute mb-8">(About)</div>
-          <p ref={ref} className="text-[clamp(1.7rem,3.4vw,3.1rem)] leading-[1.12] tracking-[-0.01em] font-medium">
+          <p ref={ref} className="text-[clamp(1.7rem,3.6vw,3.3rem)] leading-[1.12] tracking-[-0.01em] font-medium">
             {statement.map((line, li) => (
               // *starred* phrases are set in the italic serif
               <span key={li} className="block">
@@ -192,11 +203,28 @@ function About() {
               </span>
             ))}
           </p>
-          <p className="mt-10 max-w-[44ch] text-chalk/60 text-lg">
-            The short version is on the receipt. Prices are negotiable, internships especially.
+
+          <p ref={tallyRef} className="mt-14 md:mt-20 text-[clamp(1.5rem,3vw,2.75rem)] leading-[1.3] tracking-[-0.01em] text-chalk/40">
+            {tally.map((t, i) => (
+              <span key={t.value}>
+                {t.lead && `${t.lead} `}
+                <span className="group relative inline-flex items-baseline gap-[0.3em] whitespace-nowrap text-chalk">
+                  {t.logo && (
+                    <img
+                      src={t.logo}
+                      alt={t.org}
+                      className="self-center w-[1.05em] h-[1.05em] rounded-[0.25em] object-cover bg-chalk -rotate-6 transition-transform duration-500 ease-expo group-hover:rotate-6 group-hover:scale-110"
+                    />
+                  )}
+                  <span className="font-semibold semi text-saffron">
+                    <Odometer value={t.value} run={tallyOn} delay={i * 250} />
+                  </span>
+                </span>{" "}
+                {t.tail}{" "}
+              </span>
+            ))}
           </p>
         </div>
-        <Receipt />
       </div>
     </section>
   );
